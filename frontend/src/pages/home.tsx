@@ -1,16 +1,10 @@
-import { useNavigate } from "react-router-dom";
+import { Header } from "./components/header";
 
 export const HomePage = () => {
-  const navigate = useNavigate();
   return (
-    <section>
-      <div>Home page</div>
-      <button
-        onClick={() => navigate("/catalog-page")}
-        className="w-full rounded-lg bg-neutral-300 px-4 py-1 font-semibold transition-colors hover:bg-neutral-400"
-      >
-        To Catalog
-      </button>
+    <section className="flex h-screen flex-col items-center bg-neutral-200 p-10 text-neutral-700">
+      <Header />
+      <p className="text-2xl font-bold">Home page</p>
     </section>
   );
 };

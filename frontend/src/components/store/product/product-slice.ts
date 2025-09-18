@@ -1,5 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit";
-import type { IProductState } from "./product-types";
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import type { IProductState, ProductProps } from "./product-types";
 
 const initialState: IProductState = {
   products: [
@@ -46,7 +46,10 @@ export const productSlice = createSlice({
   name: "product",
   initialState,
   reducers: {
-    addProductToCart: (state, action) => {
+    addProductToCart: (
+      state,
+      action: PayloadAction<{ product: ProductProps; amount: number }>,
+    ) => {
       const existingProduct = state.orderedProducts.find(
         (product) => product.product.id === action.payload.product.id,
       );
@@ -56,13 +59,16 @@ export const productSlice = createSlice({
         state.orderedProducts.push(action.payload);
       }
     },
-    removeProductFromCart: (state, action) => {
+    removeProductFromCart: (state, action: PayloadAction<{ id: number }>) => {
       state.orderedProducts = state.orderedProducts.filter(
-        (product) => product.product.id === action.payload,
+        (product) => product.product.id !== action.payload.id,
       );
     },
     removeAllProductsFromCart: () => initialState,
-    setNewAmount: (state, action) => {
+    setNewAmount: (
+      state,
+      action: PayloadAction<{ id: number; amount: number }>,
+    ) => {
       const id = action.payload.id;
       const amount = action.payload.amount;
 

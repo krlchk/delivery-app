@@ -26,8 +26,14 @@ export const OrderUnit = ({ product, amount }: OrderProductProps) => {
       <div className="p-3">
         <p className="text-center text-xl font-semibold">{product.name}</p>
         <p className="text-lg font-medium">
-          Price:{" "}
+          Price for one:{" "}
           <span className="font-bold text-red-800">{product.price}$</span>
+        </p>
+        <p className="text-lg font-medium">
+          Total price:{" "}
+          <span className="font-bold text-green-800">
+            {product.price * amount}$
+          </span>
         </p>
         <p className="text-lg font-medium">
           Description:{" "}

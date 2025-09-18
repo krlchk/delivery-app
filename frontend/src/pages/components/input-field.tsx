@@ -1,10 +1,4 @@
-type InputFieldProps = {
-  id: string;
-  label: string;
-  required?: boolean;
-  type: string;
-  placeholder: string;
-};
+import type { InputFieldProps } from "./types";
 
 export const InputField = ({
   id,
