@@ -12,7 +12,7 @@ import bcrypt from "bcrypt";
 
 export const createUser = async (req: Request, res: Response) => {
   try {
-    const { name, number, email, password } = req.body;
+    const { fullName, phoneNumber, email, password } = req.body;
     const existingUser = await getUserByEmailService({ email });
 
     if (existingUser) {
@@ -23,8 +23,13 @@ export const createUser = async (req: Request, res: Response) => {
       return responseHandler(res, 400, "Problem with password", null);
     }
 
-    const user = await createUserService({ name, number, email, password });
-    return responseHandler(res, 201, "User created succesfully", user); //
+    const user = await createUserService({
+      fullName,
+      phoneNumber,
+      email,
+      password,
+    });
+    return responseHandler(res, 201, "User created succesfully", user);
   } catch (error) {
     return errorHandler(error, res);
   }
@@ -39,7 +44,7 @@ export const loginUser = async (req: Request, res: Response) => {
       return responseHandler(res, 401, "Can not find user with this email");
     }
 
-    const validPassword = await bcrypt.compare(password, user.password_hash);
+    const validPassword = await bcrypt.compare(password, user.passwordHash);
 
     if (!validPassword) {
       return responseHandler(res, 401, "The credentials are invalid");
@@ -96,18 +101,31 @@ export const deleteUser = async (req: Request, res: Response) => {
   }
 };
 
-// export const updateUser = async (req: Request, res: Response) => {
-//   try {
-//     const idToUpdate = parseInt(req.params.id);
-//     const { email, name, number, password, role } = req.body;
+export const updateUser = async (req: Request, res: Response) => {
+  try {
+    const idToUpdate = parseInt(req.params.id);
+    if (isNaN(idToUpdate)) {
+      return responseHandler(res, 400, "Invalid user ID");
+    }
 
-//     if (isNaN(idToUpdate)) {
-//       return responseHandler(res, 400, "Invalid user ID");
-//     }
+    const requester = req.user;
+    if (
+      !requester ||
+      (requester.role !== "admin" && requester.id !== idToUpdate)
+    ) {
+      return responseHandler(res, 403, "Forbidden: Access denied");
+    }
 
-//     const requester = req.user;
+    const dto = req.body;
 
-//   } catch (error) {
-//     errorHandler(error, res);
-//   }
-// };
+    const updatedUser = await updateUserService(idToUpdate, dto);
+
+    if (!updatedUser) {
+      return responseHandler(res, 404, "User not found");
+    }
+
+    return responseHandler(res, 200, "User updated successfully", updatedUser);
+  } catch (error) {
+    return errorHandler(error, res);
+  }
+};

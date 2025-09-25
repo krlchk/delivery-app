@@ -1,25 +1,27 @@
 import pool from "../config/db";
 import bcrypt from "bcrypt";
 import {
-  createUserServiceProps,
-  deleteUserServiceProps,
-  getUserByEmailServiceProps,
-  getUserByIdServiceProps,
-  updateUserServiceProps,
-} from "./types";
+  CreateUserDto,
+  DeleteUserDto,
+  GetUserByEmailDto,
+  GetUserByIdDto,
+  IUser,
+  UpdateUserDto,
+} from "../types/user.types";
+import { Id } from "../types/common.types";
 
 export const createUserService = async ({
-  name,
-  number,
+  fullName,
+  phoneNumber,
   email,
   password,
-}: createUserServiceProps) => {
+}: CreateUserDto): Promise<IUser> => {
   try {
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
     const result = await pool.query(
       "INSERT INTO users (full_name, phone_number, email, password_hash, role) VALUES ($1, $2, $3, $4, 'customer') RETURNING *",
-      [name, number, email, hashedPassword]
+      [fullName, phoneNumber, email, hashedPassword]
     );
     return result.rows[0];
   } catch (error) {
@@ -28,7 +30,9 @@ export const createUserService = async ({
   }
 };
 
-export const deleteUserService = async ({ id }: deleteUserServiceProps) => {
+export const deleteUserService = async ({
+  id,
+}: DeleteUserDto): Promise<IUser | null> => {
   try {
     const result = await pool.query(
       "DELETE FROM users WHERE id = $1 RETURNING *",
@@ -44,12 +48,17 @@ export const deleteUserService = async ({ id }: deleteUserServiceProps) => {
   }
 };
 
-export const updateUserService = async (props: updateUserServiceProps) => {
+export const updateUserService = async (
+  id: Id,
+  dto: UpdateUserDto
+): Promise<IUser | null> => {
   try {
-    const { id, ...fieldsToUpdate } = props;
-    if (Object.keys(fieldsToUpdate).length === 0) {
+    if (Object.keys(dto).length === 0) {
       return getUserByIdService({ id });
     }
+
+    const fieldsToUpdate = { ...dto };
+
     if (fieldsToUpdate.password) {
       const saltRounds = 10;
       fieldsToUpdate.password = await bcrypt.hash(
@@ -60,13 +69,11 @@ export const updateUserService = async (props: updateUserServiceProps) => {
     const setClauses = Object.keys(fieldsToUpdate)
       .map((key, index) => {
         const dbKey =
-          key === "name"
-            ? "full_name"
-            : key === "number"
-            ? "phone_number"
-            : key === "password"
-            ? "password_hash"
-            : key;
+          {
+            fullName: "full_name",
+            phoneNumber: "phone_number",
+            password: "password_hash",
+          }[key] || key;
         return `${dbKey} = $${index + 1}`;
       })
       .join(", ");
@@ -85,13 +92,14 @@ export const updateUserService = async (props: updateUserServiceProps) => {
 
     return result.rows[0];
   } catch (error) {
-    const { id, ...fieldsToUpdate } = props;
     console.error(`Error updating user with id ${id}`, error);
     throw error;
   }
 };
 
-export const getUserByIdService = async ({ id }: getUserByIdServiceProps) => {
+export const getUserByIdService = async ({
+  id,
+}: GetUserByIdDto): Promise<IUser | null> => {
   try {
     const result = await pool.query("SELECT * FROM users WHERE id = $1", [id]);
     if (result.rows.length === 0) {
@@ -106,7 +114,7 @@ export const getUserByIdService = async ({ id }: getUserByIdServiceProps) => {
 
 export const getUserByEmailService = async ({
   email,
-}: getUserByEmailServiceProps) => {
+}: GetUserByEmailDto): Promise<IUser | null> => {
   try {
     const result = await pool.query("SELECT * FROM users WHERE email = $1", [
       email,
@@ -121,7 +129,7 @@ export const getUserByEmailService = async ({
   }
 };
 
-export const getAllUsersService = async () => {
+export const getAllUsersService = async (): Promise<IUser[]> => {
   try {
     const result = await pool.query("SELECT * FROM users");
     return result.rows;
