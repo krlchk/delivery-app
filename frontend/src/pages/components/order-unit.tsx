@@ -3,9 +3,9 @@ import {
   removeProductFromCart,
   setNewAmount,
 } from "../../components/store/product/product-slice";
-import type { OrderProductProps } from "../../components/store/product/product-types";
+import type { IOrderProduct } from "../../components/store/types/product.types";
 
-export const OrderUnit = ({ product, amount }: OrderProductProps) => {
+export const OrderUnit = ({ product, amount }: IOrderProduct) => {
   const dispatch = useAppDispatch();
 
   const handleRemoveFromCart = () => {

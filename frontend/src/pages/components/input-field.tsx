@@ -6,6 +6,8 @@ export const InputField = ({
   required,
   type,
   placeholder,
+  onValueChange,
+  value
 }: InputFieldProps) => {
   return (
     <div className="flex flex-col">
@@ -13,6 +15,8 @@ export const InputField = ({
         {label}
       </label>
       <input
+        value={value}
+        onChange={(e) => onValueChange(e.target.value)}
         required={required}
         className="mt-2 rounded-lg px-4 py-1 outline-neutral-400 placeholder:text-lg placeholder:font-semibold"
         id={id}

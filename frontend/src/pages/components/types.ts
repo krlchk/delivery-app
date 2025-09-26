@@ -4,6 +4,8 @@ export type InputFieldProps = {
   required?: boolean;
   type: string;
   placeholder: string;
+  onValueChange: (value: string) => void;
+  value: string;
 };
 
 export type ToastProps = {

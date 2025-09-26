@@ -1,5 +1,5 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import type { IProductState, ProductProps } from "./product-types";
+import type { IProduct, IProductState } from "../types/product.types";
 
 const initialState: IProductState = {
   products: [
@@ -48,7 +48,7 @@ export const productSlice = createSlice({
   reducers: {
     addProductToCart: (
       state,
-      action: PayloadAction<{ product: ProductProps; amount: number }>,
+      action: PayloadAction<{ product: IProduct; amount: number }>,
     ) => {
       const existingProduct = state.orderedProducts.find(
         (product) => product.product.id === action.payload.product.id,

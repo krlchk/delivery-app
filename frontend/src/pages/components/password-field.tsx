@@ -1,20 +1,25 @@
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
+import { InputField } from "./input-field";
 
-export const PasswordField = () => {
+type passwordFieldProps = {
+  setPassword: (value: string) => void;
+  value: string;
+};
+
+export const PasswordField = ({ setPassword, value }: passwordFieldProps) => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
   return (
     <div className="relative flex flex-col">
-      <label className="text-xl font-medium leading-8" htmlFor="password">
-        Password
-      </label>
-      <input
-        required
-        className="mt-2 rounded-lg px-4 py-1 outline-neutral-400 placeholder:text-lg placeholder:font-semibold"
+      <InputField
+        value={value}
         id="password"
-        type={showPassword ? "text" : "password"}
+        label="Password"
         placeholder="at least 8 characteres"
+        type={showPassword ? "text" : "password"}
+        required
+        onValueChange={setPassword}
       />
       <button
         className="absolute bottom-1 right-1"

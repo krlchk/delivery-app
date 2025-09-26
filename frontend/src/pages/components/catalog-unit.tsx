@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useAppDispatch } from "../../app/hooks";
 import { addProductToCart } from "../../components/store/product/product-slice";
-import type { ProductProps } from "../../components/store/product/product-types";
+import type { IProduct } from "../../components/store/types/product.types";
 
 export const CatalogUnit = ({
   id,
@@ -9,7 +9,7 @@ export const CatalogUnit = ({
   name,
   price,
   description,
-}: ProductProps) => {
+}: IProduct) => {
   const dispatch = useAppDispatch();
 
   const [amount, setAmount] = useState(1);
