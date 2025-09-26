@@ -12,7 +12,7 @@ import bcrypt from "bcrypt";
 
 export const createUser = async (req: Request, res: Response) => {
   try {
-    const { fullName, phoneNumber, email, password } = req.body;
+    const { full_name, phone_number, email, password } = req.body;
     const existingUser = await getUserByEmailService({ email });
 
     if (existingUser) {
@@ -24,8 +24,8 @@ export const createUser = async (req: Request, res: Response) => {
     }
 
     const user = await createUserService({
-      fullName,
-      phoneNumber,
+      full_name,
+      phone_number,
       email,
       password,
     });
@@ -44,7 +44,7 @@ export const loginUser = async (req: Request, res: Response) => {
       return responseHandler(res, 401, "Can not find user with this email");
     }
 
-    const validPassword = await bcrypt.compare(password, user.passwordHash);
+    const validPassword = await bcrypt.compare(password, user.password_hash);
 
     if (!validPassword) {
       return responseHandler(res, 401, "The credentials are invalid");
@@ -116,9 +116,9 @@ export const updateUser = async (req: Request, res: Response) => {
       return responseHandler(res, 403, "Forbidden: Access denied");
     }
 
-    const dto = req.body;
+    const fieldsToUpdate = req.body;
 
-    const updatedUser = await updateUserService(idToUpdate, dto);
+    const updatedUser = await updateUserService(idToUpdate, fieldsToUpdate);
 
     if (!updatedUser) {
       return responseHandler(res, 404, "User not found");

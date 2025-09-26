@@ -11,8 +11,8 @@ import {
 import { Id } from "../types/common.types";
 
 export const createUserService = async ({
-  fullName,
-  phoneNumber,
+  full_name,
+  phone_number,
   email,
   password,
 }: CreateUserDto): Promise<IUser> => {
@@ -21,7 +21,7 @@ export const createUserService = async ({
     const hashedPassword = await bcrypt.hash(password, saltRounds);
     const result = await pool.query(
       "INSERT INTO users (full_name, phone_number, email, password_hash, role) VALUES ($1, $2, $3, $4, 'customer') RETURNING *",
-      [fullName, phoneNumber, email, hashedPassword]
+      [full_name, phone_number, email, hashedPassword]
     );
     return result.rows[0];
   } catch (error) {

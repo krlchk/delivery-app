@@ -1,16 +1,19 @@
 import { IBase, Id, Role } from "./common.types";
 
 export interface IUser extends IBase {
-  fullName: string;
-  phoneNumber: string;
+  full_name: string;
+  // fullName: string;
+  phone_number: string;
+  // phoneNumber: string;
   email: string;
-  passwordHash: string;
+  password_hash: string;
+  // passwordHash: string;
   role: Role;
 }
 
 export type CreateUserDto = Omit<
   IUser,
-  "id" | "createdAt" | "updatedAt" | "role" | "passwordHash"
+  "id" | "created_at" | "updated_at" | "role" | "password_hash"
 > & { password: string };
 
 export type DeleteUserDto = {
