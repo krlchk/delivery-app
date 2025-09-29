@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useAppSelector } from "../../app/hooks";
+import { useAppSelector } from "../app/hooks";
 
 export const Header = () => {
   const { orderedProducts } = useAppSelector(

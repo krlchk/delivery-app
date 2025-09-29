@@ -1,4 +1,4 @@
-import type { InputFieldProps } from "./types";
+import type { InputFieldProps } from "./shared.types";
 
 export const InputField = ({
   id,
@@ -7,11 +7,12 @@ export const InputField = ({
   type,
   placeholder,
   onValueChange,
-  value
+  value,
+  disabled
 }: InputFieldProps) => {
   return (
     <div className="flex flex-col">
-      <label className="text-xl font-medium leading-8" htmlFor="email">
+      <label className="text-xl font-medium leading-8" htmlFor={id}>
         {label}
       </label>
       <input
@@ -22,6 +23,7 @@ export const InputField = ({
         id={id}
         type={type}
         placeholder={placeholder}
+        disabled={disabled}
       />
     </div>
   );

@@ -1,9 +1,9 @@
-import { useAppDispatch } from "../../app/hooks";
+import { useAppDispatch } from "../app/hooks";
 import {
   removeProductFromCart,
   setNewAmount,
-} from "../../components/store/product/product-slice";
-import type { IOrderProduct } from "../../components/store/types/product.types";
+} from "../components/store/product/product-slice";
+import type { IOrderProduct } from "../components/store/types/product.types";
 
 export const OrderUnit = ({ product, amount }: IOrderProduct) => {
   const dispatch = useAppDispatch();

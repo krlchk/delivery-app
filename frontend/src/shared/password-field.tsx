@@ -1,13 +1,9 @@
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import { InputField } from "./input-field";
+import type { PasswordFieldProps } from "./shared.types";
 
-type passwordFieldProps = {
-  setPassword: (value: string) => void;
-  value: string;
-};
-
-export const PasswordField = ({ setPassword, value }: passwordFieldProps) => {
+export const PasswordField = ({ setPassword, value,disabled }: PasswordFieldProps) => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
   return (
@@ -16,10 +12,11 @@ export const PasswordField = ({ setPassword, value }: passwordFieldProps) => {
         value={value}
         id="password"
         label="Password"
-        placeholder="at least 8 characteres"
+        placeholder="*******"
         type={showPassword ? "text" : "password"}
         required
         onValueChange={setPassword}
+        disabled={disabled}
       />
       <button
         className="absolute bottom-1 right-1"

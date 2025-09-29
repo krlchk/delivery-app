@@ -1,7 +1,6 @@
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { OrderUnit } from "./components";
+import { Header, OrderUnit } from "../shared";
 import { removeAllProductsFromCart } from "../components/store/product/product-slice";
-import { Header } from "./components/header";
 
 export const OrderPage = () => {
   const { orderedProducts } = useAppSelector(

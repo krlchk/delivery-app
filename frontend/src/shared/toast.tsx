@@ -1,4 +1,4 @@
-import type { ToastProps } from "./types";
+import type { ToastProps } from "./shared.types";
 
 export const Toast = ({ message, toastColor }: ToastProps) => {
   return (

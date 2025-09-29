@@ -3,8 +3,8 @@ export type Role = "customer" | "admin" | "courier";
 
 export interface IBase {
   id: Id;
-  created_at: Date;
-  updated_at: Date;
+  created_at?: Date;
+  updated_at?: Date;
 }
 
 export interface IResponseBase {

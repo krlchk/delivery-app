@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { useAppDispatch } from "../../app/hooks";
-import { addProductToCart } from "../../components/store/product/product-slice";
-import type { IProduct } from "../../components/store/types/product.types";
+import { useAppDispatch } from "../app/hooks";
+import type { IProduct } from "../components/store/types/product.types";
+import { addProductToCart } from "../components/store/product/product-slice";
 
 export const CatalogUnit = ({
   id,
