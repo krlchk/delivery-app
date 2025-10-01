@@ -16,3 +16,8 @@ export interface IOrderProduct {
   amount: number;
   product: IProduct;
 }
+
+export interface OrderSummaryProps {
+  orderedProducts: IOrderProduct[];
+  totalCost: number;
+}

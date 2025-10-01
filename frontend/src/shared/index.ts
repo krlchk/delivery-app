@@ -4,3 +4,5 @@ export { CatalogUnit } from "./catalog-unit";
 export { OrderUnit } from "./order-unit";
 export { Toast } from "./toast";
 export { Header } from "./header";
+export { LoginForm } from "./login-form";
+export { RegistrationForm } from "./registration-form";

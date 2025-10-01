@@ -5,6 +5,7 @@ import {
   LoginPage,
   OrderPage,
   RegistrationPage,
+  UserPage,
 } from "./pages";
 
 const App = () => {
@@ -15,6 +16,7 @@ const App = () => {
       <Route element={<CatalogPage />} path="/catalog-page" />
       <Route element={<OrderPage />} path="/order-page" />
       <Route element={<HomePage />} path="/" />
+      <Route element={<UserPage />} path="/user-page" />
     </Routes>
   );
 };

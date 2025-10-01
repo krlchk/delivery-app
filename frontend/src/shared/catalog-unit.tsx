@@ -2,18 +2,15 @@ import { useState } from "react";
 import { useAppDispatch } from "../app/hooks";
 import type { IProduct } from "../components/store/types/product.types";
 import { addProductToCart } from "../components/store/product/product-slice";
+import {
+  MAX_PRODUCT_AMOUNT,
+  MIN_PRODUCT_AMOUNT,
+} from "../components/utils/CONSTANTS";
 
-export const CatalogUnit = ({
-  id,
-  image,
-  name,
-  price,
-  description,
-}: IProduct) => {
+export const CatalogUnit = ({ product }: { product: IProduct }) => {
   const dispatch = useAppDispatch();
-
-  const [amount, setAmount] = useState(1);
-
+  const [amount, setAmount] = useState(MIN_PRODUCT_AMOUNT);
+  const { id, image, name, price, description } = product;
   const handleAddProduct = () => {
     dispatch(
       addProductToCart({
@@ -27,38 +24,39 @@ export const CatalogUnit = ({
         },
       }),
     );
-    setAmount(1);
+    setAmount(MIN_PRODUCT_AMOUNT);
+  };
+  const handleReduce = () => {
+    if (amount > MIN_PRODUCT_AMOUNT) setAmount((prevAmount) => prevAmount - 1);
+  };
+  const handleAdd = () => {
+    if (amount < MAX_PRODUCT_AMOUNT) setAmount((prevAmount) => prevAmount + 1);
   };
   return (
-    <div key={id} className="rounded-lg border border-neutral-400">
+    <article key={id} className="rounded-lg border border-neutral-400">
       <img
         className="w-full rounded-tl-lg rounded-tr-lg"
         src={image}
-        alt="product image"
+        alt={name}
       />
-      <div className="p-3">
-        <p className="text-center text-xl font-semibold">{name}</p>
-        <p className="text-lg font-medium">
-          Price: <span className="font-bold text-red-800">{price}$</span>
+      <section className="p-3 text-lg font-medium">
+        <h2 className="text-center text-xl font-semibold">{name}</h2>
+        <p>
+          Price: <span className="font-bold text-green-800">{price}$</span>
         </p>
-        <p className="text-lg font-medium">
-          Description:{" "}
-          <span className="text-lg font-normal">{description}</span>
+        <p>
+          Description: <span className="font-normal">{description}</span>
         </p>
         <div className="flex items-center justify-center gap-5 text-neutral-500">
           <button
-            onClick={() => {
-              if (amount >= 2) setAmount((prevAmount) => prevAmount - 1);
-            }}
+            onClick={handleReduce}
             className="flex h-10 w-10 items-center justify-center rounded-full border border-neutral-400 text-lg font-semibold transition-colors hover:bg-neutral-300"
           >
             -
           </button>
           <p className="text-xl">{amount}</p>
           <button
-            onClick={() => {
-              if (amount < 10) setAmount((prevAmount) => prevAmount + 1);
-            }}
+            onClick={handleAdd}
             className="flex h-10 w-10 items-center justify-center rounded-full border border-neutral-400 text-lg font-semibold transition-colors hover:bg-neutral-300"
           >
             +
@@ -70,7 +68,7 @@ export const CatalogUnit = ({
         >
           add to order
         </button>
-      </div>
-    </div>
+      </section>
+    </article>
   );
 };

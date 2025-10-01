@@ -1,4 +1,4 @@
-import { RegistrationForm } from "../shared/registration-form";
+import { RegistrationForm } from "../shared";
 
 export const RegistrationPage = () => {
   return (

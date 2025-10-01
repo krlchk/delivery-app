@@ -90,13 +90,11 @@ export const RegistrationForm = () => {
             </a>
           </label>
         </div>
-
         {submitError && (
           <p role="alert" className="text-center font-bold text-red-500">
             {submitError}
           </p>
         )}
-
         <button
           type="submit"
           className="w-full rounded-lg bg-neutral-300 py-2 font-semibold transition-colors hover:bg-neutral-400"

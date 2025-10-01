@@ -4,6 +4,10 @@ import {
   setNewAmount,
 } from "../components/store/product/product-slice";
 import type { IOrderProduct } from "../components/store/types/product.types";
+import {
+  MAX_PRODUCT_AMOUNT,
+  MIN_PRODUCT_AMOUNT,
+} from "../components/utils/CONSTANTS";
 
 export const OrderUnit = ({ product, amount }: IOrderProduct) => {
   const dispatch = useAppDispatch();
@@ -16,14 +20,36 @@ export const OrderUnit = ({ product, amount }: IOrderProduct) => {
     );
   };
 
+  const handleReduce = () => {
+    if (amount === MIN_PRODUCT_AMOUNT) {
+      handleRemoveFromCart();
+    } else {
+      dispatch(
+        setNewAmount({
+          id: product.id,
+          amount: amount - 1,
+        }),
+      );
+    }
+  };
+  const handleAdd = () => {
+    if (amount < MAX_PRODUCT_AMOUNT)
+      dispatch(
+        setNewAmount({
+          id: product.id,
+          amount: amount + 1,
+        }),
+      );
+  };
+
   return (
-    <div key={product.id} className="rounded-lg border border-neutral-400">
+    <article key={product.id} className="rounded-lg border border-neutral-400">
       <img
         className="w-full rounded-tl-lg rounded-tr-lg"
         src={product.image}
         alt="product image"
       />
-      <div className="p-3">
+      <section className="p-3">
         <p className="text-center text-xl font-semibold">{product.name}</p>
         <p className="text-lg font-medium">
           Price for one:{" "}
@@ -41,37 +67,18 @@ export const OrderUnit = ({ product, amount }: IOrderProduct) => {
         </p>
         <div className="flex items-center justify-center gap-5 text-neutral-500">
           <button
-            onClick={() => {
-              if (amount === 1) {
-                handleRemoveFromCart();
-              } else {
-                dispatch(
-                  setNewAmount({
-                    id: product.id,
-                    amount: amount - 1,
-                  }),
-                );
-              }
-            }}
+            onClick={handleReduce}
             className="flex h-10 w-10 items-center justify-center rounded-full border border-neutral-400 text-lg font-semibold transition-colors hover:bg-neutral-300"
           >
             -
           </button>
           <p
-            className={`text-xl ${amount === 1 ? "text-red-500" : ""} ${amount === 10 ? "text-green-500" : ""}`}
+            className={`text-xl ${amount === 1 ? "text-red-800" : ""} ${amount === 10 ? "text-green-800" : ""}`}
           >
             {amount}
           </p>
           <button
-            onClick={() => {
-              if (amount < 10)
-                dispatch(
-                  setNewAmount({
-                    id: product.id,
-                    amount: amount + 1,
-                  }),
-                );
-            }}
+            onClick={handleAdd}
             className="flex h-10 w-10 items-center justify-center rounded-full border border-neutral-400 text-lg font-semibold transition-colors hover:bg-neutral-300"
           >
             +
@@ -83,7 +90,7 @@ export const OrderUnit = ({ product, amount }: IOrderProduct) => {
         >
           remove from order
         </button>
-      </div>
-    </div>
+      </section>
+    </article>
   );
 };
