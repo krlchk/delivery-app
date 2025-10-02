@@ -1,3 +1,5 @@
+import type { IProduct } from "../components/store/types/product.types";
+
 export type InputFieldProps = {
   id: string;
   label: string;
@@ -11,6 +13,11 @@ export type InputFieldProps = {
 
 export type ToastProps = {
   message: string;
+};
+
+export type CatalogUnitProps = {
+  product: IProduct;
+  showToast: (msg: string) => void;
 };
 
 export type PasswordFieldProps = {

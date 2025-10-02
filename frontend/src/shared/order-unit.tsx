@@ -18,13 +18,13 @@ export const OrderUnit = ({ product, amount, showToast }: IOrderProduct) => {
         id: product.id,
       }),
     );
-    showToast("Product removed from order")
+    if (showToast) showToast("Product removed from order");
   };
 
   const handleReduce = () => {
     if (amount === MIN_PRODUCT_AMOUNT) {
       handleRemoveFromCart();
-      showToast("Product removed from order")
+      if (showToast) showToast("Product removed from order");
     } else {
       dispatch(
         setNewAmount({
@@ -45,29 +45,34 @@ export const OrderUnit = ({ product, amount, showToast }: IOrderProduct) => {
   };
 
   return (
-    <article key={product.id} className="rounded-lg border border-neutral-400">
-      <img
-        className="w-full rounded-tl-lg rounded-tr-lg"
-        src={product.image}
-        alt="product image"
-      />
-      <section className="p-3">
-        <p className="text-center text-xl font-semibold">{product.name}</p>
-        <p className="text-lg font-medium">
+    <article
+      key={product.id}
+      className="flex h-full flex-col overflow-hidden rounded-lg border border-neutral-400"
+    >
+      <div className="flex aspect-[4/3] items-center justify-center bg-white">
+        <img
+          className="h-60 w-60 object-contain"
+          src={product.img}
+          alt={product.name}
+        />
+      </div>
+      <section className="flex flex-col p-3 text-lg font-medium">
+        <h2 className="text-center text-xl font-semibold">{product.name}</h2>
+        <p className="mt-5">
           Price for one:{" "}
           <span className="font-bold text-neutral-700">{product.price}$</span>
         </p>
-        <p className="text-lg font-medium">
+        <p>
           Total price:{" "}
           <span className="font-bold text-green-800">
             {product.price * amount}$
           </span>
         </p>
-        <p className="text-lg font-medium">
+        <p className="mt-5 h-28 flex-grow overflow-hidden">
           Description:{" "}
-          <span className="text-lg font-normal">{product.description}</span>
+          <span className="font-normal">{product.description}</span>
         </p>
-        <div className="flex items-center justify-center gap-5 text-neutral-500">
+        <div className="mt-auto flex items-center justify-center gap-5 text-neutral-500">
           <button
             onClick={handleReduce}
             className="flex h-10 w-10 items-center justify-center rounded-full border border-neutral-400 text-lg font-semibold transition-colors hover:bg-neutral-300"

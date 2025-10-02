@@ -4,7 +4,7 @@ import { Header } from "../shared";
 export const UserPage = () => {
   const { user } = useAppSelector((state) => state.delivery.users);
   return (
-    <main className="flex h-screen flex-col bg-neutral-200 p-10 text-neutral-700">
+    <main className="flex h-full flex-col bg-neutral-200 p-10 text-neutral-700">
       <Header />
       <h1 className="text-center text-2xl font-bold">User`s page</h1>
       <section className="mt-2 flex flex-col gap-3 text-xl font-medium">

@@ -1,45 +1,12 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import type { IProduct, IProductState } from "../types/product.types";
+import { fetchProducts } from "./products-async-thunks";
 
 const initialState: IProductState = {
-  products: [
-    {
-      id: 1,
-      name: "Wooden Chair",
-      price: 120,
-      description: "Comfortable wooden chair made of oak.",
-      image: "https://picsum.photos/300/200?random=1",
-    },
-    {
-      id: 2,
-      name: "Modern Sofa",
-      price: 450,
-      description: "Stylish modern sofa for your living room.",
-      image: "https://picsum.photos/300/200?random=2",
-    },
-    {
-      id: 3,
-      name: "Office Desk",
-      price: 280,
-      description: "Minimalist office desk with metal legs.",
-      image: "https://picsum.photos/300/200?random=3",
-    },
-    {
-      id: 4,
-      name: "Bed Frame",
-      price: 600,
-      description: "Queen-size bed frame with headboard.",
-      image: "https://picsum.photos/300/200?random=4",
-    },
-    {
-      id: 5,
-      name: "Dining Table",
-      price: 350,
-      description: "Round dining table for 4 people.",
-      image: "https://picsum.photos/300/200?random=5",
-    },
-  ],
+  products: [],
   orderedProducts: [],
+  status: "idle",
+  error: null as string | null,
 };
 
 export const productSlice = createSlice({
@@ -48,7 +15,11 @@ export const productSlice = createSlice({
   reducers: {
     addProductToCart: (
       state,
-      action: PayloadAction<{ product: IProduct; amount: number }>,
+      action: PayloadAction<{
+        product: IProduct;
+        amount: number;
+        showToast?: (msg: string) => void | null;
+      }>,
     ) => {
       const existingProduct = state.orderedProducts.find(
         (product) => product.product.id === action.payload.product.id,
@@ -77,6 +48,19 @@ export const productSlice = createSlice({
       );
       if (necessaryProduct) necessaryProduct.amount = amount;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(fetchProducts.pending, (state) => {
+      state.status = "loading";
+    });
+    builder.addCase(fetchProducts.fulfilled, (state, action) => {
+      state.status = "succeeded";
+      state.products = action.payload;
+    });
+    builder.addCase(fetchProducts.rejected, (state, action) => {
+      state.status = "failed";
+      state.error = action.error.message || "Failed to fetch";
+    });
   },
 });
 
