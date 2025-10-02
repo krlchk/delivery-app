@@ -16,7 +16,12 @@ export const createUser = async (req: Request, res: Response) => {
     const existingUser = await getUserByEmailService({ email });
 
     if (existingUser) {
-      return responseHandler(res, 400, "The user already exists", existingUser);
+      return responseHandler(
+        res,
+        409,
+        "The user with this mail already exists",
+        existingUser
+      );
     }
 
     if (!password) {
