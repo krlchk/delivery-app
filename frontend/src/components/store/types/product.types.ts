@@ -15,9 +15,11 @@ export interface IProduct extends IBase {
 export interface IOrderProduct {
   amount: number;
   product: IProduct;
+  showToast: (msg: string) => void;
 }
 
 export interface OrderSummaryProps {
   orderedProducts: IOrderProduct[];
   totalCost: number;
+  showToast: (msg: string) => void;
 }

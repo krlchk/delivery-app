@@ -7,7 +7,13 @@ import {
   MIN_PRODUCT_AMOUNT,
 } from "../components/utils/CONSTANTS";
 
-export const CatalogUnit = ({ product }: { product: IProduct }) => {
+export const CatalogUnit = ({
+  product,
+  showToast,
+}: {
+  product: IProduct;
+  showToast: (msg: string) => void;
+}) => {
   const dispatch = useAppDispatch();
   const [amount, setAmount] = useState(MIN_PRODUCT_AMOUNT);
   const { id, image, name, price, description } = product;
@@ -15,15 +21,10 @@ export const CatalogUnit = ({ product }: { product: IProduct }) => {
     dispatch(
       addProductToCart({
         amount: amount,
-        product: {
-          id: id,
-          image: image,
-          name: name,
-          price: price,
-          description: description,
-        },
+        product: product,
       }),
     );
+    showToast("Product added to order");
     setAmount(MIN_PRODUCT_AMOUNT);
   };
   const handleReduce = () => {

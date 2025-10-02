@@ -11,7 +11,6 @@ export type InputFieldProps = {
 
 export type ToastProps = {
   message: string;
-  toastColor: string;
 };
 
 export type PasswordFieldProps = {

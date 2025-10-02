@@ -9,7 +9,7 @@ import {
   MIN_PRODUCT_AMOUNT,
 } from "../components/utils/CONSTANTS";
 
-export const OrderUnit = ({ product, amount }: IOrderProduct) => {
+export const OrderUnit = ({ product, amount, showToast }: IOrderProduct) => {
   const dispatch = useAppDispatch();
 
   const handleRemoveFromCart = () => {
@@ -18,11 +18,13 @@ export const OrderUnit = ({ product, amount }: IOrderProduct) => {
         id: product.id,
       }),
     );
+    showToast("Product removed from order")
   };
 
   const handleReduce = () => {
     if (amount === MIN_PRODUCT_AMOUNT) {
       handleRemoveFromCart();
+      showToast("Product removed from order")
     } else {
       dispatch(
         setNewAmount({
@@ -53,7 +55,7 @@ export const OrderUnit = ({ product, amount }: IOrderProduct) => {
         <p className="text-center text-xl font-semibold">{product.name}</p>
         <p className="text-lg font-medium">
           Price for one:{" "}
-          <span className="font-bold text-red-800">{product.price}$</span>
+          <span className="font-bold text-neutral-700">{product.price}$</span>
         </p>
         <p className="text-lg font-medium">
           Total price:{" "}
