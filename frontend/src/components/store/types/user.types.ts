@@ -1,4 +1,4 @@
-import type { IBase, IResponseBase, Role } from "./common.types";
+import type { IBase, IBaseState, IResponseBase, Role } from "./common.types";
 
 export interface IUser extends IBase {
   full_name: string;
@@ -8,11 +8,9 @@ export interface IUser extends IBase {
   role: Role;
 }
 
-export interface IUserState {
+export interface IUserState  extends IBaseState {
   user: IUser | null;
   token: string | null;
-  status: "idle" | "loading" | "succeeded" | "failed";
-  error: string | null;
 }
 
 export interface IRegisterResponse extends IResponseBase {

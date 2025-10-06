@@ -8,7 +8,7 @@ export type InputFieldProps = {
   placeholder: string;
   onValueChange: (value: string) => void;
   value?: string;
-  disabled: boolean;
+  disabled?: boolean;
 };
 
 export type ToastProps = {

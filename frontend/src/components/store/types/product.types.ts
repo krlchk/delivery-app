@@ -1,10 +1,8 @@
-import type { IBase, IResponseBase } from "./common.types";
+import type { IBase, IBaseState, IResponseBase } from "./common.types";
 
-export interface IProductState {
+export interface IProductState extends IBaseState {
   products: IProduct[];
   orderedProducts: IOrderProduct[];
-  status: "idle" | "loading" | "succeeded" | "failed";
-  error: string | null;
 }
 
 export interface IProduct extends IBase {

@@ -7,6 +7,11 @@ export interface IBase {
   updated_at?: Date;
 }
 
+export interface IBaseState {
+  status: "idle" | "loading" | "succeeded" | "failed";
+  error: string | null;
+}
+
 export interface IResponseBase {
   status: number;
   message: string;
