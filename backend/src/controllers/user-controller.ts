@@ -65,7 +65,7 @@ export const loginUser = async (req: Request, res: Response) => {
   }
 };
 
-export const getAllUsers = async (req: Request, res: Response) => {
+export const getAllUsers = async (_req: Request, res: Response) => {
   try {
     const users = await getAllUsersService();
     return responseHandler(res, 200, "Users fetched succesfully", users);

@@ -1,9 +1,10 @@
 import express, { Request, Response } from "express";
-import pool from './config/db'
+import pool from "./config/db";
 import cors from "cors";
 import dotenv from "dotenv";
 import userRoutes from "./routes/user-route";
 import productRoutes from "./routes/product-route";
+import orderRoutes from "./routes/order-routes";
 
 dotenv.config();
 
@@ -15,6 +16,7 @@ app.use(cors());
 
 app.use("/api", userRoutes);
 app.use("/api", productRoutes);
+app.use("/api", orderRoutes);
 
 app.get("/", async (_req: Request, res: Response) => {
   try {

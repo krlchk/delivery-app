@@ -8,7 +8,6 @@ import {
   updateProductService,
 } from "../models";
 import { errorHandler, responseHandler } from "../utils";
-import { UpdateProductDto } from "../types/product.type";
 
 export const createProduct = async (req: Request, res: Response) => {
   try {
@@ -36,7 +35,7 @@ export const createProduct = async (req: Request, res: Response) => {
   }
 };
 
-export const getAllProducts = async (req: Request, res: Response) => {
+export const getAllProducts = async (_req: Request, res: Response) => {
   try {
     const products = await getAllProductsService();
     return responseHandler(res, 200, "Products fetched succesfully", products);
@@ -86,7 +85,7 @@ export const updateProduct = async (req: Request, res: Response) => {
   try {
     const idToUpdate = parseInt(req.params.id);
     if (isNaN(idToUpdate)) {
-      return responseHandler(res, 400, "Invalid product ID");
+      return responseHandler(res, 400, "Invalid product Id");
     }
 
     const requester = req.user;
