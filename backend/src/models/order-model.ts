@@ -25,7 +25,7 @@ export const createOrderService = async ({
     const itemQueries = items.map((item) => {
       return client.query(
         `INSERT INTO order_items (order_id, product_id, quantity, price_per_item) VALUES ($1, $2, $3, $4)`,
-        [newOrder.id, item.productId, item.quantity, item.price]
+        [newOrder.id, item.product.id, item.amount, item.product.price]
       );
     });
     await Promise.all(itemQueries);

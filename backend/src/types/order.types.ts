@@ -1,4 +1,5 @@
 import { IBase, Id } from "./common.types";
+import { IProduct } from "./product.type";
 
 export interface IOrder extends IBase {
   clientId: Id;
@@ -7,10 +8,33 @@ export interface IOrder extends IBase {
   deliveryAddress: string;
 }
 
-export type CreateOrderDto = Omit<
-  IOrder,
-  "id" | "created_at" | "updated_at" | "status"
-> & { items: IOrderItem[] };
+export interface IOrderItem {
+  productId: number;
+  name: string;
+  price: number;
+  quantity: number;
+}
+
+export interface IOrderWithItems extends IOrder {
+  items: IOrderItem[];
+}
+
+export interface IOrderItemPayload {
+  product: IProduct;
+  amount: number;
+}
+
+export type CreateOrderDto = {
+  clientId: Id;
+  deliveryAddress: string;
+  items: IOrderItemPayload[];
+};
+
+export type UpdateOrderDto = {
+  courierId?: Id | null;
+  status?: "new" | "delivering" | "completed";
+  deliveryAddress?: string;
+};
 
 export type GetOrderByIdDto = {
   id: Id;
@@ -19,18 +43,3 @@ export type GetOrderByIdDto = {
 export type DeleteOrderDto = {
   id: Id;
 };
-
-export type UpdateOrderDto = Partial<CreateOrderDto> & {
-  status?: "new" | "delivering" | "completed";
-};
-
-export interface IOrderWithItems extends IOrder {
-  items: IOrderItem[];
-}
-
-export interface IOrderItem {
-  productId: number;
-  name: string;
-  price: number;
-  quantity: number;
-}
