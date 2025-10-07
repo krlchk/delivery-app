@@ -11,11 +11,11 @@ import { authenticateToken } from "../middleware";
 
 const router = express.Router();
 
-router.post("/register", createUser);
-router.post("/login", loginUser);
-router.delete("/delete-user/:id", authenticateToken, deleteUser);
-router.get("/users", authenticateToken, getAllUsers);
-router.get("/users/:id", authenticateToken, getUserById);
-router.patch("/update-user/:id", authenticateToken, updateUser);
+router.post("/register", createUser); //good
+router.post("/login", loginUser); //good
+router.delete("/delete-user/:id", authenticateToken, deleteUser); //good
+router.get("/users", authenticateToken, getAllUsers); //good
+router.get("/users/:id", authenticateToken, getUserById); //good
+router.patch("/update-user/:id", authenticateToken, updateUser); //good
 
 export default router;

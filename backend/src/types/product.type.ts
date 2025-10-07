@@ -4,13 +4,15 @@ export interface IProduct extends IBase {
   name: string;
   description: string;
   price: number;
-  stock_quantity: number;
+  stockQuantity: number;
 }
 
-export type CreateProductDto = Omit<
-  IProduct,
-  "id" | "created_at" | "updated_at"
->;
+export type CreateProductDto = {
+  name: string;
+  description: string;
+  price: number;
+  stockQuantity: number;
+};
 
 export type DeleteProductDto = {
   id: Id;

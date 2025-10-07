@@ -1,3 +1,4 @@
+import camelcaseKeys from "camelcase-keys";
 import pool from "../config/db";
 import { Id } from "../types/common.types";
 import {
@@ -30,7 +31,7 @@ export const createOrderService = async ({
     });
     await Promise.all(itemQueries);
     await client.query("COMMIT");
-    return newOrder;
+    return camelcaseKeys(newOrder);
   } catch (error) {
     console.error(`Error creating order`, error);
     throw error;
@@ -64,7 +65,7 @@ export const getOrderByIdService = async ({
     if (result.rows.length === 0) {
       return null;
     }
-    return result.rows[0];
+    return camelcaseKeys(result.rows[0]);
   } catch (error) {
     console.error(`Error fetching order with id ${id}`, error);
     throw error;
@@ -82,7 +83,7 @@ export const deleteOrderService = async ({
     if (result.rows.length === 0) {
       return null;
     }
-    return result.rows[0];
+    return camelcaseKeys(result.rows[0]);
   } catch (error) {
     console.error(`Error deleting order with id ${id}`, error);
     throw error;
@@ -107,6 +108,8 @@ export const updateOrderService = async (
             clientId: "client_id",
             courierId: "courier_id",
             deliveryAddress: "delivery_address",
+            createdAt: "created_at",
+            updatedAt: "updated_at",
           }[key] || key;
         return `${dbKey} = $${index + 1}`;
       })
@@ -124,7 +127,7 @@ export const updateOrderService = async (
       return null;
     }
 
-    return result.rows[0];
+    return camelcaseKeys(result.rows[0]);
   } catch (error) {
     console.error(`Error updating order with id ${id}`, error);
     throw error;
@@ -149,7 +152,7 @@ export const getAllOrdersService = async (): Promise<IOrderWithItems[]> => {
      LEFT JOIN products p ON oi.product_id = p.id
      GROUP BY o.id`
     );
-    return result.rows;
+    return camelcaseKeys(result.rows);
   } catch (error) {
     console.error("Error fetching all orders", error);
     throw error;
@@ -177,7 +180,7 @@ export const getOrdersByClientIdService = async (
        ORDER BY o.created_at DESC`,
       [clientId]
     );
-    return result.rows;
+    return camelcaseKeys(result.rows);
   } catch (error) {
     console.error(`Error fetching orders for client id ${clientId}`, error);
     throw error;

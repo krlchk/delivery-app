@@ -11,7 +11,7 @@ import { errorHandler, responseHandler } from "../utils";
 
 export const createProduct = async (req: Request, res: Response) => {
   try {
-    const { name, description, price, stock_quantity } = req.body;
+    const { name, description, price, stockQuantity } = req.body;
     const existingProduct = await getProductByNameService({ name });
 
     if (existingProduct) {
@@ -27,7 +27,7 @@ export const createProduct = async (req: Request, res: Response) => {
       name,
       description,
       price,
-      stock_quantity,
+      stockQuantity,
     });
     return responseHandler(res, 201, "Product created succesfully", product);
   } catch (error) {

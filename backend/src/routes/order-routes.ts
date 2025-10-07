@@ -11,12 +11,12 @@ import {
 
 const router = express.Router();
 
-router.post("/create-order", authenticateToken, createOrder);
-router.get("/orders/my", authenticateToken, getMyOrders);
-router.get("/orders/:id", authenticateToken, getOrderById);
+router.post("/create-order", authenticateToken, createOrder); //good
+router.get("/orders/my", authenticateToken, getMyOrders); //good
+router.get("/orders/:id", authenticateToken, getOrderById); //good
 
-router.get("/orders", authenticateToken, getAllOrders);
-router.patch("/update-order/:id", authenticateToken, updateOrder);
+router.get("/orders", authenticateToken, getAllOrders); //good
+router.patch("/update-order/:id", authenticateToken, updateOrder); //good
 router.delete("/delete-order/:id", authenticateToken, deleteOrder);
 
 export default router;

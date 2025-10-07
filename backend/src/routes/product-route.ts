@@ -10,10 +10,10 @@ import { authenticateToken } from "../middleware";
 
 const router = express.Router();
 
-router.post("/create-product", authenticateToken, createProduct);
-router.delete("/delete-product/:id", authenticateToken, deleteProduct);
-router.get("/products", getAllProducts);
-router.get("/products/:id", getProductById);
-router.patch("/update-product/:id", authenticateToken, updateProduct);
+router.post("/create-product", authenticateToken, createProduct); //good
+router.delete("/delete-product/:id", authenticateToken, deleteProduct); //good
+router.get("/products", getAllProducts); //good
+router.get("/products/:id", getProductById); //good
+router.patch("/update-product/:id", authenticateToken, updateProduct); //good
 
 export default router;

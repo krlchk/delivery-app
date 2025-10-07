@@ -1,3 +1,4 @@
+import camelcaseKeys from "camelcase-keys";
 import pool from "../config/db";
 import { Id } from "../types/common.types";
 import {
@@ -13,14 +14,14 @@ export const createProductService = async ({
   name,
   description,
   price,
-  stock_quantity,
+  stockQuantity,
 }: CreateProductDto): Promise<IProduct> => {
   try {
     const result = await pool.query(
       "INSERT INTO products (name, description, price, stock_quantity) VALUES ($1, $2, $3, $4) RETURNING *",
-      [name, description, price, stock_quantity]
+      [name, description, price, stockQuantity]
     );
-    return result.rows[0];
+    return camelcaseKeys(result.rows[0]);
   } catch (error) {
     console.error(`Error creating product`, error);
     throw error;
@@ -38,7 +39,7 @@ export const deleteProductService = async ({
     if (result.rows.length === 0) {
       return null;
     }
-    return result.rows[0];
+    return camelcaseKeys(result.rows[0]);
   } catch (error) {
     console.error(`Error deleting product with id ${id}`, error);
     throw error;
@@ -57,7 +58,16 @@ export const updateProductService = async (
     const fieldsToUpdate = { ...dto };
 
     const setClauses = Object.keys(fieldsToUpdate)
-      .map((key, index) => `${key} = $${index + 1}`)
+      .map((key, index) => {
+        const dbKey =
+          {
+            stockQuantity: "stock_quantity",
+            createdAt: "created_at",
+            updatedAt: "updated_at",
+          }[key] || key;
+
+        return `${dbKey} = $${index + 1}`;
+      })
       .join(", ");
 
     const queryValues = Object.values(fieldsToUpdate);
@@ -72,7 +82,7 @@ export const updateProductService = async (
       return null;
     }
 
-    return result.rows[0];
+    return camelcaseKeys(result.rows[0]);
   } catch (error) {
     console.error(`Error updating product with id ${id}`, error);
     throw error;
@@ -89,7 +99,7 @@ export const getProductByIdService = async ({
     if (result.rows.length === 0) {
       return null;
     }
-    return result.rows[0];
+    return camelcaseKeys(result.rows[0]);
   } catch (error) {
     console.error(`Error fetching product with id ${id}`, error);
     throw error;
@@ -99,7 +109,7 @@ export const getProductByIdService = async ({
 export const getAllProductsService = async (): Promise<IProduct[]> => {
   try {
     const result = await pool.query("SELECT * FROM products");
-    return result.rows;
+    return camelcaseKeys(result.rows);
   } catch (error) {
     console.error("Error fetching all products", error);
     throw error;
@@ -116,7 +126,7 @@ export const getProductByNameService = async ({
     if (result.rows.length === 0) {
       return null;
     }
-    return result.rows[0];
+    return camelcaseKeys(result.rows[0]);
   } catch (error) {
     console.error(`Error fetching product with name ${name}`, error);
     throw error;

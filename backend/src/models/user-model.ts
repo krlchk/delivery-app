@@ -9,10 +9,11 @@ import {
   UpdateUserDto,
 } from "../types/user.types";
 import { Id } from "../types/common.types";
+import camelcaseKeys from "camelcase-keys";
 
 export const createUserService = async ({
-  full_name,
-  phone_number,
+  fullName,
+  phoneNumber,
   email,
   password,
 }: CreateUserDto): Promise<IUser> => {
@@ -21,9 +22,9 @@ export const createUserService = async ({
     const hashedPassword = await bcrypt.hash(password, saltRounds);
     const result = await pool.query(
       "INSERT INTO users (full_name, phone_number, email, password_hash, role) VALUES ($1, $2, $3, $4, 'customer') RETURNING *",
-      [full_name, phone_number, email, hashedPassword]
+      [fullName, phoneNumber, email, hashedPassword]
     );
-    return result.rows[0];
+    return camelcaseKeys(result.rows[0]);
   } catch (error) {
     console.error(`Error creating user with email ${email}`, error);
     throw error;
@@ -41,7 +42,7 @@ export const deleteUserService = async ({
     if (result.rows.length === 0) {
       return null;
     }
-    return result.rows[0];
+    return camelcaseKeys(result.rows[0]);
   } catch (error) {
     console.error(`Error deleting user with id ${id}`, error);
     throw error;
@@ -73,6 +74,8 @@ export const updateUserService = async (
             fullName: "full_name",
             phoneNumber: "phone_number",
             password: "password_hash",
+            createdAt: "created_at",
+            updatedAt: "updated_at",
           }[key] || key;
         return `${dbKey} = $${index + 1}`;
       })
@@ -90,7 +93,7 @@ export const updateUserService = async (
       return null;
     }
 
-    return result.rows[0];
+    return camelcaseKeys(result.rows[0]);
   } catch (error) {
     console.error(`Error updating user with id ${id}`, error);
     throw error;
@@ -105,7 +108,7 @@ export const getUserByIdService = async ({
     if (result.rows.length === 0) {
       return null;
     }
-    return result.rows[0];
+    return camelcaseKeys(result.rows[0]);
   } catch (error) {
     console.error(`Error fetching user with id ${id}`, error);
     throw error;
@@ -122,7 +125,7 @@ export const getUserByEmailService = async ({
     if (result.rows.length === 0) {
       return null;
     }
-    return result.rows[0];
+    return camelcaseKeys(result.rows[0]);
   } catch (error) {
     console.error(`Error fetching user with email ${email}`, error);
     throw error;
@@ -132,7 +135,7 @@ export const getUserByEmailService = async ({
 export const getAllUsersService = async (): Promise<IUser[]> => {
   try {
     const result = await pool.query("SELECT * FROM users");
-    return result.rows;
+    return camelcaseKeys(result.rows);
   } catch (error) {
     console.error("Error fetching all users", error);
     throw error;
