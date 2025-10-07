@@ -8,12 +8,31 @@ export interface IOrder extends IBase {
   deliveryAddress: string;
 }
 
+export interface IOrderItem {
+  productId: number;
+  name: string;
+  price: number;
+  quantity: number;
+}
+
+export interface IOrderWithItems {
+  id: Id;
+  status: "new" | "delivering" | "completed";
+  deliveryAddress: string;
+  createdAt: Date;
+  items: IOrderItem[];
+}
+
 export interface IOrderState extends IBaseState {
   orders: IOrder[];
+  myOrders: IOrderWithItems[];
 }
 
 export interface IOrderResponse extends IResponseBase {
   data: IOrder;
+}
+export interface IOrdersResponse extends IResponseBase {
+  data: IOrderWithItems[];
 }
 
 export interface IOrderItemPayload {

@@ -9,14 +9,14 @@ import axios, { isAxiosError } from 'axios';
 
 export const registerUser = createAsyncThunk<
   IUser,
-  { full_name: string; phone_number: string; email: string; password: string }
+  { fullName: string; phoneNumber: string; email: string; password: string }
 >(
   "register/registerUser",
-  async ({ full_name, phone_number, email, password }, thunkAPI) => {
+  async ({ fullName, phoneNumber, email, password }, thunkAPI) => {
     try {
       const response = await axios.post<IRegisterResponse>(
         "http://localhost:5001/api/register",
-        { full_name, phone_number, email, password },
+        { fullName, phoneNumber, email, password },
       );
       return response.data.user;
     } catch (error: unknown) {

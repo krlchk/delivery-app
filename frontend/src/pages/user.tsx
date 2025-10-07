@@ -9,10 +9,10 @@ export const UserPage = () => {
       <h1 className="text-center text-2xl font-bold">User`s page</h1>
       <section className="mt-2 flex flex-col gap-3 text-xl font-medium">
         <p>
-          Name: <span className="font-normal">{user?.full_name}</span>
+          Name: <span className="font-normal">{user?.fullName}</span>
         </p>
         <p>
-          Number: <span className="font-normal">{user?.phone_number}</span>
+          Number: <span className="font-normal">{user?.phoneNumber}</span>
         </p>
         <p>
           Email: <span className="font-normal">{user?.email}</span>

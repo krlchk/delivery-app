@@ -11,9 +11,9 @@ export const RegistrationForm = () => {
   const navigate = useNavigate();
 
   const [password, setPassword] = useState("");
-  const [full_name, setName] = useState("");
+  const [fullName, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [phone_number, setNumber] = useState("");
+  const [phoneNumber, setNumber] = useState("");
   const [submitError, setSubmitError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -22,7 +22,7 @@ export const RegistrationForm = () => {
 
     try {
       await dispatch(
-        registerUser({ email, full_name, password, phone_number }),
+        registerUser({ email, fullName, password, phoneNumber }),
       ).unwrap();
       navigate("/login-page");
     } catch (err: unknown) {
@@ -41,7 +41,7 @@ export const RegistrationForm = () => {
       <form onSubmit={handleSubmit} className="mt-7 flex w-full flex-col gap-7">
         <InputField
           disabled={isLoading}
-          value={full_name}
+          value={fullName}
           onValueChange={setName}
           id="name"
           label="Name"
@@ -51,7 +51,7 @@ export const RegistrationForm = () => {
         />
         <InputField
           disabled={isLoading}
-          value={phone_number}
+          value={phoneNumber}
           onValueChange={setNumber}
           id="phone"
           label="Phone number"

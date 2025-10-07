@@ -3,6 +3,8 @@ import type {
   IOrder,
   IOrderItemPayload,
   IOrderResponse,
+  IOrdersResponse,
+  IOrderWithItems,
 } from "../types/order.types";
 import type { RootState } from "../../../app/store";
 import axios, { isAxiosError } from "axios";
@@ -48,4 +50,22 @@ export const createOrder = createAsyncThunk<
 
     return thunkAPI.rejectWithValue({ message });
   }
+});
+
+export const fetchMyOrders = createAsyncThunk<
+  IOrderWithItems[],
+  void,
+  { state: RootState }
+>("orders/fetchMyOrders", async (_, thunkAPI) => {
+  const state = thunkAPI.getState();
+  const token = state.delivery.users.token;
+  const response = await axios.get<IOrdersResponse>(
+    "http://localhost:5001/api/orders/my",
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
+  return response.data.data;
 });

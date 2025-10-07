@@ -1,10 +1,10 @@
 import type { IBase, IBaseState, IResponseBase, Role } from "./common.types";
 
 export interface IUser extends IBase {
-  full_name: string;
-  phone_number: string;
+  fullName: string;
+  phoneNumber: string;
   email: string;
-  password_hash: string;
+  passwordHash: string;
   role: Role;
 }
 

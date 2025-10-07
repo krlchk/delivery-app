@@ -10,7 +10,7 @@ export interface IProduct extends IBase {
   name: string;
   description: string;
   price: number;
-  stock_quantity: number;
+  stockQuantity: number;
 }
 
 export interface IOrderProduct {

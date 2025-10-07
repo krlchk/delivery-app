@@ -1,3 +1,5 @@
+import type { Id } from "../components/store/types/common.types";
+import type { IOrderItem } from "../components/store/types/order.types";
 import type { IProduct } from "../components/store/types/product.types";
 
 export type InputFieldProps = {
@@ -28,4 +30,12 @@ export type PasswordFieldProps = {
 
 export interface ApiError {
   message: string;
+}
+
+export interface IMyOrder {
+  id: Id;
+  status: "new" | "delivering" | "completed";
+  deliveryAddress: string;
+  createdAt: Date;
+  items: IOrderItem[];
 }
