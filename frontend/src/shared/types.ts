@@ -1,6 +1,6 @@
+import type { ReactNode } from "react";
 import type { IOrderItem } from "../components/store/order/types";
 import type { IProduct } from "../components/store/product/types";
-
 
 export type InputFieldProps = {
   id: string;
@@ -34,8 +34,14 @@ export interface ApiError {
 
 export interface IMyOrder {
   id: number;
-  status: "new" | "delivering" | "completed";
+  status: "new" | "delivering" | "completed" | "cancelled";
   deliveryAddress: string;
   createdAt: Date;
   items: IOrderItem[];
+}
+
+export interface ModalWindowProps {
+  isOpen?: boolean;
+  handleClick: () => void;
+  child?: ReactNode;
 }

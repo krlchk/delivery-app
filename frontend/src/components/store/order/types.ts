@@ -4,7 +4,7 @@ export interface IOrder {
   id: number;
   clientId: number;
   courierId?: number | null;
-  status: "new" | "delivering" | "completed";
+  status: "new" | "delivering" | "completed" | "cancelled";
   deliveryAddress: string;
   createdAt?: Date;
   updatedAt?: Date;
@@ -20,7 +20,7 @@ export interface IOrderItem {
 
 export interface IOrderWithItems {
   id: number;
-  status: "new" | "delivering" | "completed";
+  status: "new" | "delivering" | "completed" | "cancelled";
   deliveryAddress: string;
   createdAt: Date;
   items: IOrderItem[];

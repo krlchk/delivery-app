@@ -88,3 +88,33 @@ export const fetchOrderById = createAsyncThunk<
   );
   return response.data.data;
 });
+
+export const deleteOrder = createAsyncThunk<
+  IOrder,
+  {
+    id: number;
+  },
+  { state: RootState }
+>("orders/deleteOrder", async ({ id }, thunkAPI) => {
+  try {
+    const state = thunkAPI.getState();
+    const token = state.delivery.users.token;
+    const response = await axios.delete<IOrderResponse>(
+      `http://localhost:5001/api/delete-order/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    return response.data.data;
+  } catch (error: unknown) {
+    let message = "Failed to delete order";
+
+    if (isAxiosError(error) && error.response?.data?.message) {
+      message = error.response.data.message;
+    }
+
+    return thunkAPI.rejectWithValue({ message });
+  }
+});

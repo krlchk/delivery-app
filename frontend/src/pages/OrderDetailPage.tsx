@@ -1,10 +1,15 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { useEffect, useMemo } from "react";
-import { fetchOrderById } from "../components/store/order/orderAsyncThunks";
+import { useEffect, useMemo, useState } from "react";
+import {
+  deleteOrder,
+  fetchOrderById,
+} from "../components/store/order/orderAsyncThunks";
 import { Header } from "../shared";
 import clsx from "clsx";
 import type { IOrderWithItems } from "../components/store/order/types";
+import { ModalWindow } from "../shared";
+import { ModalCancellation } from "../modal";
 
 export const OrderDetailPage = () => {
   const { id } = useParams();
@@ -12,6 +17,8 @@ export const OrderDetailPage = () => {
   const { currentOrder, status, error } = useAppSelector(
     (state) => state.delivery.orders,
   );
+  const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
   useEffect(() => {
     if (id) {
       dispatch(fetchOrderById(parseInt(id)));
@@ -24,6 +31,20 @@ export const OrderDetailPage = () => {
       0,
     );
   }, [currentOrder?.items]);
+
+  const handleModalClick = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const handleDelete = async (orderId: number) => {
+    try {
+      await dispatch(deleteOrder({ id: orderId })).unwrap();
+
+      navigate("/");
+    } catch (error) {
+      console.error("Failed to delete the order:", error);
+    }
+  };
 
   if (status === "loading" || status === "idle") {
     return (
@@ -48,6 +69,7 @@ export const OrderDetailPage = () => {
       </main>
     );
   }
+
   return (
     <main className="flex h-full flex-col items-center bg-neutral-200 p-10 text-xl font-semibold text-neutral-700">
       <Header />
@@ -76,18 +98,48 @@ export const OrderDetailPage = () => {
           <span className="font-bold text-green-800">{totalCost}$</span>
         </p>
         <OrderDetailProducts currentOrder={currentOrder} />
-        <button className="mt-5 w-full rounded-lg bg-orange-500 px-4 py-2 font-semibold text-white transition-colors hover:bg-orange-800">
-          Cancel order
-        </button>
+        {currentOrder.status === "cancelled" ? (
+          <>
+            <button
+              onClick={() => {
+                navigate("../");
+              }}
+              className="mt-5 w-full rounded-lg border border-neutral-700 bg-neutral-700/30 px-4 py-2 font-semibold text-neutral-700 transition-colors hover:bg-neutral-700/50"
+            >
+              Back
+            </button>
+            <button
+              onClick={()=>handleDelete(currentOrder.id)}
+              className="mt-1 w-full rounded-lg bg-orange-500 px-4 py-2 font-semibold text-white transition-colors hover:bg-orange-800"
+            >
+              Remove
+            </button>
+          </>
+        ) : (
+          <button
+            onClick={handleModalClick}
+            className="mt-5 w-full rounded-lg bg-orange-500 px-4 py-2 font-semibold text-white transition-colors hover:bg-orange-800"
+          >
+            Cancel order
+          </button>
+        )}
+
         {currentOrder.status === "completed" && (
           <section className="mt-5 text-center">
             <p className="text-green-800">Order completed!</p>
-            <button className="w-full mt-2 rounded-lg bg-green-800 px-4 py-2 font-semibold text-white transition-colors hover:bg-green-900">
+            <button className="mt-2 w-full rounded-lg bg-green-800 px-4 py-2 font-semibold text-white transition-colors hover:bg-green-900">
               Clear order
             </button>
           </section>
         )}
       </section>
+      <ModalWindow
+        isOpen={isOpen}
+        handleClick={handleModalClick}
+        child={
+          <ModalCancellation isOpen={isOpen} handleClick={handleModalClick} />
+        }
+      />
     </main>
   );
 };
