@@ -1,4 +1,4 @@
-import type { IIcon } from "./icons.types";
+import type { IIcon } from "./types";
 
 export const UserIcon = ({ className }: IIcon) => {
   return (

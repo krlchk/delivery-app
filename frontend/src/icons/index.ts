@@ -1,2 +1,3 @@
-export { LogoIcon } from "./logo-icon";
-export { UserIcon } from "./user-icon";
+export { LogoIcon } from "./LogoIcon";
+export { UserIcon } from "./UserIcon";
+export { CrossIcon } from "./CrossIcon";

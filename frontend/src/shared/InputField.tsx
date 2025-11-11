@@ -1,4 +1,4 @@
-import type { InputFieldProps } from "./shared.types";
+import type { InputFieldProps } from "./types";
 
 export const InputField = ({
   id,

@@ -1,7 +1,7 @@
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
-import { InputField } from "./input-field";
-import type { PasswordFieldProps } from "./shared.types";
+import { InputField } from "./InputField";
+import type { PasswordFieldProps } from "./types";
 
 export const PasswordField = ({ setPassword, value,disabled }: PasswordFieldProps) => {
   const [showPassword, setShowPassword] = useState<boolean>(false);

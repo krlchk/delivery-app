@@ -2,8 +2,8 @@ import { useAppDispatch } from "../app/hooks";
 import {
   removeProductFromCart,
   setNewAmount,
-} from "../components/store/product/product-slice";
-import type { IOrderProduct } from "../components/store/types/product.types";
+} from "../components/store/product/productSlice";
+import type { IOrderProduct } from "../components/store/product/types";
 import {
   MAX_PRODUCT_AMOUNT,
   MIN_PRODUCT_AMOUNT,

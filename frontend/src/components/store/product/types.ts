@@ -1,16 +1,19 @@
-import type { IBase, IBaseState, IResponseBase } from "./common.types";
-
-export interface IProductState extends IBaseState {
+export interface IProductState {
   products: IProduct[];
   orderedProducts: IOrderProduct[];
+  status: "idle" | "loading" | "succeeded" | "failed";
+  error: string | null;
 }
 
-export interface IProduct extends IBase {
+export interface IProduct {
+  id: number;
   img: string;
   name: string;
   description: string;
   price: number;
   stockQuantity: number;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export interface IOrderProduct {
@@ -25,6 +28,8 @@ export interface OrderSummaryProps {
   showToast: (msg: string) => void;
 }
 
-export interface IProductResponse extends IResponseBase {
+export interface IProductResponse {
   data: IProduct[];
+  status: number;
+  message: string;
 }

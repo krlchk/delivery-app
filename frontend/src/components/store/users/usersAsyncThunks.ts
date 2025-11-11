@@ -4,8 +4,8 @@ import type {
   ILoginResponseData,
   IRegisterResponse,
   IUser,
-} from "../types/user.types";
-import axios, { isAxiosError } from 'axios';
+} from "./types";
+import axios, { isAxiosError } from "axios";
 
 export const registerUser = createAsyncThunk<
   IUser,

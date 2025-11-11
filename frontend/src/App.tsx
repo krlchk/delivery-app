@@ -3,6 +3,7 @@ import {
   CatalogPage,
   HomePage,
   LoginPage,
+  OrderDetailPage,
   OrderPage,
   RegistrationPage,
   UserPage,
@@ -17,6 +18,7 @@ const App = () => {
       <Route element={<OrderPage />} path="/order-page" />
       <Route element={<HomePage />} path="/" />
       <Route element={<UserPage />} path="/user-page" />
+      <Route element={<OrderDetailPage />} path="/orders/:id" />
     </Routes>
   );
 };

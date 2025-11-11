@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { loginUser, registerUser } from "./users-async-thunks";
-import type { IUserState } from "../types/user.types";
+import { loginUser, registerUser } from "./usersAsyncThunks";
+import type { IUserState } from "./types";
 
 const initialState: IUserState = {
   user: null,
@@ -13,7 +13,7 @@ export const userSlice = createSlice({
   name: "user",
   initialState: initialState,
   reducers: {
-    setUserReset: () => initialState,
+    logoutUser: () => initialState,
     resetStatus: (state) => {
       state.status = "idle";
       state.error = null;
@@ -46,5 +46,5 @@ export const userSlice = createSlice({
   },
 });
 
-export const { resetStatus, setUserReset } = userSlice.actions;
+export const { resetStatus, logoutUser } = userSlice.actions;
 export default userSlice.reducer;

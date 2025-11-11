@@ -1,6 +1,7 @@
-export { CatalogPage } from "./catalog";
-export { LoginPage } from "./login";
-export { RegistrationPage } from "./registration";
-export { HomePage } from "./home";
-export { OrderPage } from "./order";
-export { UserPage } from "./user";
+export { CatalogPage } from "./CatalogPage";
+export { LoginPage } from "./LoginPage";
+export { RegistrationPage } from "./RegistrationPage";
+export { HomePage } from "./HomePage";
+export { OrderPage } from "./OrderPage";
+export { UserPage } from "./UserPage";
+export { OrderDetailPage } from "./OrderDetailPage";

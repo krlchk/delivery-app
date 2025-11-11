@@ -1,8 +1,8 @@
-export { InputField } from "./input-field";
-export { PasswordField } from "./password-field";
-export { CatalogUnit } from "./catalog-unit";
-export { OrderUnit } from "./order-unit";
-export { Toast } from "./toast";
-export { Header } from "./header";
-export { LoginForm } from "./login-form";
-export { RegistrationForm } from "./registration-form";
+export { InputField } from "./InputField";
+export { PasswordField } from "./PasswordField";
+export { CatalogUnit } from "./CatalogUnit";
+export { OrderUnit } from "./OrderUnit";
+export { LoginForm } from "./LoginFrom";
+export { RegistrationForm } from "./RefistrationForm";
+export { Header } from "./Header";
+export { Toast } from "./Toast";

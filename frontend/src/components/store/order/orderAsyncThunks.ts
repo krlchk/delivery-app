@@ -1,11 +1,12 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import type {
   IOrder,
+  IOrderByIdResponse,
   IOrderItemPayload,
   IOrderResponse,
   IOrdersResponse,
   IOrderWithItems,
-} from "../types/order.types";
+} from "./types";
 import type { RootState } from "../../../app/store";
 import axios, { isAxiosError } from "axios";
 
@@ -61,6 +62,24 @@ export const fetchMyOrders = createAsyncThunk<
   const token = state.delivery.users.token;
   const response = await axios.get<IOrdersResponse>(
     "http://localhost:5001/api/orders/my",
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
+  return response.data.data;
+});
+
+export const fetchOrderById = createAsyncThunk<
+  IOrderWithItems,
+  number,
+  { state: RootState }
+>("orders/fetchOrderById", async (id, thunkAPI) => {
+  const state = thunkAPI.getState();
+  const token = state.delivery.users.token;
+  const response = await axios.get<IOrderByIdResponse>(
+    `http://localhost:5001/api/orders/${id}`,
     {
       headers: {
         Authorization: `Bearer ${token}`,

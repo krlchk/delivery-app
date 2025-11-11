@@ -1,14 +1,13 @@
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { Header } from "../shared";
-import { fetchMyOrders } from "../components/store/order/order-async-thunks";
-import { MyOrder } from "../shared/homepage-order-unit";
+import { fetchMyOrders } from "../components/store/order/orderAsyncThunks";
+import { Link } from "react-router-dom";
+import { HomePageOrderUnit } from "../shared/HomePageOrderUnit";
 
 export const HomePage = () => {
   const { status, myOrders } = useAppSelector((state) => state.delivery.orders);
   const dispatch = useAppDispatch();
-  console.log(status);
-  console.log(myOrders);
 
   useEffect(() => {
     if (status === "idle") {
@@ -23,7 +22,9 @@ export const HomePage = () => {
       <ul className="mt-5 grid grid-cols-3 gap-3">
         {myOrders.map((order) => (
           <li key={order.id}>
-            <MyOrder orderProps={order} />
+            <Link to={`/orders/${order.id}`}>
+              <HomePageOrderUnit orderProps={order} />
+            </Link>
           </li>
         ))}
       </ul>

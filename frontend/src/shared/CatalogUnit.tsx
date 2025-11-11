@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { useAppDispatch } from "../app/hooks";
-import { addProductToCart } from "../components/store/product/product-slice";
+import { addProductToCart } from "../components/store/product/productSlice";
 import {
   MAX_PRODUCT_AMOUNT,
   MIN_PRODUCT_AMOUNT,
 } from "../components/utils/CONSTANTS";
-import type { CatalogUnitProps } from "./shared.types";
+import type { CatalogUnitProps } from "./types";
+import { resetOrderStatus } from "../components/store/order/orderSlice";
 
 export const CatalogUnit = ({ product, showToast }: CatalogUnitProps) => {
   const dispatch = useAppDispatch();
@@ -20,6 +21,7 @@ export const CatalogUnit = ({ product, showToast }: CatalogUnitProps) => {
     );
     showToast("Product added to order");
     setAmount(MIN_PRODUCT_AMOUNT);
+    dispatch(resetOrderStatus());
   };
   const handleReduce = () => {
     if (amount > MIN_PRODUCT_AMOUNT) setAmount((prevAmount) => prevAmount - 1);

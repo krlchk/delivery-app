@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { useToast } from "../hooks/use-toast";
 import { CatalogUnit, Header, Toast } from "../shared";
-import { fetchProducts } from "../components/store/product/products-async-thunks";
+import { fetchProducts } from "../components/store/product/productsAsyncThunks";
 
 export const CatalogPage = () => {
   const { products, status } = useAppSelector(

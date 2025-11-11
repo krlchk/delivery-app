@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { registerUser } from "../components/store/users/users-async-thunks";
-import { InputField } from "./input-field";
-import { PasswordField } from "./password-field";
+import { registerUser } from "../components/store/users/usersAsyncThunks";
+import { InputField } from "./InputField";
+import { PasswordField } from "./PasswordField";
 
 export const RegistrationForm = () => {
   const dispatch = useAppDispatch();

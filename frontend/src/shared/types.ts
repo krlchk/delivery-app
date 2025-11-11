@@ -1,6 +1,6 @@
-import type { Id } from "../components/store/types/common.types";
-import type { IOrderItem } from "../components/store/types/order.types";
-import type { IProduct } from "../components/store/types/product.types";
+import type { IOrderItem } from "../components/store/order/types";
+import type { IProduct } from "../components/store/product/types";
+
 
 export type InputFieldProps = {
   id: string;
@@ -33,7 +33,7 @@ export interface ApiError {
 }
 
 export interface IMyOrder {
-  id: Id;
+  id: number;
   status: "new" | "delivering" | "completed";
   deliveryAddress: string;
   createdAt: Date;
