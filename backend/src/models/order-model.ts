@@ -47,18 +47,20 @@ export const getOrderByIdService = async ({
     const result = await pool.query(
       `SELECT
        o.id, o.status, o.delivery_address, o.created_at,
+       o.client_id,
        json_agg(
          json_build_object(
            'productId', p.id,
            'name', p.name,
            'price', oi.price_per_item,
-           'quantity', oi.quantity
+           'quantity', oi.quantity,
+           'image', p.img
          )
        ) FILTER (WHERE p.id IS NOT NULL) as items
      FROM orders o
      LEFT JOIN order_items oi ON o.id = oi.order_id
      LEFT JOIN products p ON oi.product_id = p.id
-     WHERE o.id = $1
+     WHERE o.id = $1 AND o.deleted_at IS NULL
      GROUP BY o.id`,
       [id]
     );
@@ -77,7 +79,7 @@ export const deleteOrderService = async ({
 }: DeleteOrderDto): Promise<IOrder | null> => {
   try {
     const result = await pool.query(
-      "DELETE FROM orders WHERE id = $1 RETURNING *",
+      "UPDATE orders SET deleted_at = NOW() WHERE id = $1 RETURNING *",
       [id]
     );
     if (result.rows.length === 0) {
@@ -118,9 +120,9 @@ export const updateOrderService = async (
     const queryValues = Object.values(fieldsToUpdate);
 
     const queryString = `
-  UPDATE orders SET ${setClauses} WHERE id = $${
-      queryValues.length + 1
-    } RETURNING *`;
+      UPDATE orders SET ${setClauses} 
+      WHERE id = $${queryValues.length + 1} AND deleted_at IS NULL 
+      RETURNING *`;
     const result = await pool.query(queryString, [...queryValues, id]);
 
     if (result.rows.length === 0) {
@@ -150,6 +152,7 @@ export const getAllOrdersService = async (): Promise<IOrderWithItems[]> => {
      FROM orders o
      LEFT JOIN order_items oi ON o.id = oi.order_id
      LEFT JOIN products p ON oi.product_id = p.id
+     WHERE o.deleted_at IS NULL
      GROUP BY o.id`
     );
     return camelcaseKeys(result.rows);
@@ -175,7 +178,7 @@ export const getOrdersByClientIdService = async (
        FROM orders o
        LEFT JOIN order_items oi ON o.id = oi.order_id
        LEFT JOIN products p ON oi.product_id = p.id
-       WHERE o.client_id = $1
+       WHERE o.client_id = $1 AND o.deleted_at IS NULL
        GROUP BY o.id
        ORDER BY o.created_at DESC`,
       [clientId]

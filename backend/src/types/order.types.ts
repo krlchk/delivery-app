@@ -13,6 +13,7 @@ export interface IOrderItem {
   name: string;
   price: number;
   quantity: number;
+  image: string;
 }
 
 export interface IOrderWithItems extends IOrder {
