@@ -12,6 +12,7 @@ export type CreateProductDto = {
   description: string;
   price: number;
   stockQuantity: number;
+  img: string;
 };
 
 export type DeleteProductDto = {
