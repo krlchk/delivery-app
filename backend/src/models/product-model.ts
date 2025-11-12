@@ -33,7 +33,7 @@ export const deleteProductService = async ({
 }: DeleteProductDto): Promise<IProduct | null> => {
   try {
     const result = await pool.query(
-      "DELETE FROM products WHERE id = $1 RETURNING *",
+      "UPDATE products SET deleted_at = NOW() WHERE id = $1 RETURNING *",
       [id]
     );
     if (result.rows.length === 0) {
@@ -75,7 +75,7 @@ export const updateProductService = async (
     const queryString = `
   UPDATE products SET ${setClauses} WHERE id = $${
       queryValues.length + 1
-    } RETURNING *`;
+    } AND deleted_at IS NULL RETURNING *`;
     const result = await pool.query(queryString, [...queryValues, id]);
 
     if (result.rows.length === 0) {
@@ -93,7 +93,7 @@ export const getProductByIdService = async ({
   id,
 }: GetProductByIdDto): Promise<IProduct | null> => {
   try {
-    const result = await pool.query("SELECT * FROM products WHERE id = $1", [
+    const result = await pool.query("SELECT * FROM products WHERE id = $1 AND deleted_at IS NULL", [
       id,
     ]);
     if (result.rows.length === 0) {
@@ -108,7 +108,7 @@ export const getProductByIdService = async ({
 
 export const getAllProductsService = async (): Promise<IProduct[]> => {
   try {
-    const result = await pool.query("SELECT * FROM products");
+    const result = await pool.query("SELECT * FROM products WHERE deleted_at IS NULL");
     return camelcaseKeys(result.rows);
   } catch (error) {
     console.error("Error fetching all products", error);
@@ -120,7 +120,7 @@ export const getProductByNameService = async ({
   name,
 }: GetProductByNameDto): Promise<IProduct | null> => {
   try {
-    const result = await pool.query("SELECT * FROM products WHERE name = $1", [
+    const result = await pool.query("SELECT * FROM products WHERE name = $1 AND deleted_at IS NULL", [
       name,
     ]);
     if (result.rows.length === 0) {

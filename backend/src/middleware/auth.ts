@@ -31,3 +31,15 @@ export const authenticateToken = (
     return responseHandler(res, 403, "Invalid or expired token");
   }
 };
+
+export const requireAdmin = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  if (req.user && req.user.role === "admin") {
+    next();
+  } else {
+    return responseHandler(res, 403, "Forbidden: Admin access required");
+  }
+};
