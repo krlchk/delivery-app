@@ -6,14 +6,12 @@ import { Link } from "react-router-dom";
 import { HomePageOrderUnit } from "../shared/HomePageOrderUnit";
 
 export const HomePage = () => {
-  const { status, myOrders } = useAppSelector((state) => state.delivery.orders);
+  const { myOrders } = useAppSelector((state) => state.delivery.orders);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (status === "idle") {
       dispatch(fetchMyOrders());
-    }
-  }, [dispatch, status]);
+  }, [dispatch]);
 
   return (
     <main className="flex h-full flex-col items-center bg-neutral-200 p-10 text-neutral-700">

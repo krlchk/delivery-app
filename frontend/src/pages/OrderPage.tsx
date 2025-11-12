@@ -2,7 +2,7 @@ import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { Header, InputField, OrderUnit, Toast } from "../shared";
 import { removeAllProductsFromCart } from "../components/store/product/productSlice";
 import { useMemo, useState } from "react";
-import { useToast } from "../hooks/use-toast";
+import { useToast } from "../hooks/useToast";
 import { createOrder } from "../components/store/order/orderAsyncThunks";
 import { Navigate, useNavigate } from "react-router-dom";
 import { resetOrderStatus } from "../components/store/order/orderSlice";

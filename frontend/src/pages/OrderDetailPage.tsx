@@ -109,7 +109,7 @@ export const OrderDetailPage = () => {
               Back
             </button>
             <button
-              onClick={()=>handleDelete(currentOrder.id)}
+              onClick={() => handleDelete(currentOrder.id)}
               className="mt-1 w-full rounded-lg bg-orange-500 px-4 py-2 font-semibold text-white transition-colors hover:bg-orange-800"
             >
               Remove

@@ -8,6 +8,7 @@ import {
   RegistrationPage,
   UserPage,
 } from "./pages";
+import { ProtectedUserRoute } from "./hooks/protectedUserRoute";
 
 const App = () => {
   return (
@@ -15,10 +16,32 @@ const App = () => {
       <Route element={<LoginPage />} path="/login-page" />
       <Route element={<RegistrationPage />} path="/registration-page" />
       <Route element={<CatalogPage />} path="/catalog-page" />
-      <Route element={<OrderPage />} path="/order-page" />
       <Route element={<HomePage />} path="/" />
-      <Route element={<UserPage />} path="/user-page" />
-      <Route element={<OrderDetailPage />} path="/orders/:id" />
+
+      <Route
+        path="/order-page"
+        element={
+          <ProtectedUserRoute>
+            <OrderPage />
+          </ProtectedUserRoute>
+        }
+      />
+      <Route
+        path="/user-page"
+        element={
+          <ProtectedUserRoute>
+            <UserPage />
+          </ProtectedUserRoute>
+        }
+      />
+      <Route
+        path="/orders/:id"
+        element={
+          <ProtectedUserRoute>
+            <OrderDetailPage />
+          </ProtectedUserRoute>
+        }
+      />
     </Routes>
   );
 };

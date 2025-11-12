@@ -22,7 +22,7 @@ export const cancellationSlice = createSlice({
     });
     builder.addCase(createCancellation.rejected, (state, action) => {
       state.status = "failed";
-      state.error = action.error?.message || "Failed to register";
+      state.error = action.error?.message || "Failed to cancellation";
     });
   },
 });
