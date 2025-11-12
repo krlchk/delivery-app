@@ -21,7 +21,7 @@ export const CatalogPage = () => {
       <ul className="mt-5 grid grid-cols-3 gap-5">
         {products.map((product) => (
           <li key={product.id}>
-            <CatalogUnit product={product} showToast={showToast} />
+              <CatalogUnit product={product} showToast={showToast} />
           </li>
         ))}
       </ul>

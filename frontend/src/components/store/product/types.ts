@@ -1,4 +1,5 @@
 export interface IProductState {
+  currentProduct: IProduct | null;
   products: IProduct[];
   orderedProducts: IOrderProduct[];
   status: "idle" | "loading" | "succeeded" | "failed";
@@ -6,12 +7,12 @@ export interface IProductState {
 }
 
 export interface IProduct {
-  id: number;
-  img: string;
+  id?: number;
   name: string;
   description: string;
   price: number;
   stockQuantity: number;
+  img: string;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -30,6 +31,26 @@ export interface OrderSummaryProps {
 
 export interface IProductResponse {
   data: IProduct[];
+  status: number;
+  message: string;
+}
+export interface IProductCreateResponse {
+  data: IProduct;
+  status: number;
+  message: string;
+}
+export interface IProductByIdResponse {
+  data: IProduct;
+  status: number;
+  message: string;
+}
+export  interface IDeleteProductResponse {
+  data: IProduct;
+  status: number;
+  message: string;
+}
+export  interface IUpdateProductResponse {
+  data: IProduct;
   status: number;
   message: string;
 }

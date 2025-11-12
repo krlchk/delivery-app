@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useAppDispatch } from "../app/hooks";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { addProductToCart } from "../components/store/product/productSlice";
 import {
   MAX_PRODUCT_AMOUNT,
@@ -7,9 +7,11 @@ import {
 } from "../components/utils/CONSTANTS";
 import type { CatalogUnitProps } from "./types";
 import { resetOrderStatus } from "../components/store/order/orderSlice";
+import { Link } from "react-router-dom";
 
 export const CatalogUnit = ({ product, showToast }: CatalogUnitProps) => {
   const dispatch = useAppDispatch();
+  const { user } = useAppSelector((state) => state.delivery.users);
   const [amount, setAmount] = useState(MIN_PRODUCT_AMOUNT);
   const { id, img, name, price, description } = product;
   const handleAddProduct = () => {
@@ -39,6 +41,14 @@ export const CatalogUnit = ({ product, showToast }: CatalogUnitProps) => {
       </div>
       <section className="flex flex-col p-3 text-lg font-medium">
         <h2 className="text-center text-xl font-semibold">{name}</h2>
+        {user?.role === "admin" && (
+          <Link
+            className="mt-3 rounded-md border border-red-800 p-1 text-center text-sm font-bold text-red-800 hover:cursor-pointer hover:bg-red-800/10"
+            to={`/products/${product.id}`}
+          >
+            Admin settings
+          </Link>
+        )}
         <p className="mt-5">
           Price: <span className="font-bold text-green-800">{price}$</span>
         </p>

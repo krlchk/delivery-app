@@ -5,3 +5,4 @@ export { HomePage } from "./HomePage";
 export { OrderPage } from "./OrderPage";
 export { UserPage } from "./UserPage";
 export { OrderDetailPage } from "./OrderDetailPage";
+export { ProductDetailPage } from "./ProductDetailPage";

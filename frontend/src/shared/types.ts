@@ -44,4 +44,5 @@ export interface ModalWindowProps {
   isOpen?: boolean;
   handleClick: () => void;
   child?: ReactNode;
+  // error?: () => void | null;
 }

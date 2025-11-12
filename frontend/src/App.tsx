@@ -5,10 +5,12 @@ import {
   LoginPage,
   OrderDetailPage,
   OrderPage,
+  ProductDetailPage,
   RegistrationPage,
   UserPage,
 } from "./pages";
 import { ProtectedUserRoute } from "./hooks/protectedUserRoute";
+import { ProtectedAdminRoute } from "./hooks/protectedAdminRoute";
 
 const App = () => {
   return (
@@ -40,6 +42,16 @@ const App = () => {
           <ProtectedUserRoute>
             <OrderDetailPage />
           </ProtectedUserRoute>
+        }
+      />
+      <Route
+        path="/products/:id"
+        element={
+          <ProtectedAdminRoute>
+            <ProtectedUserRoute>
+              <ProductDetailPage />
+            </ProtectedUserRoute>
+          </ProtectedAdminRoute>
         }
       />
     </Routes>
