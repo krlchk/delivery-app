@@ -46,7 +46,7 @@ export const getOrderByIdService = async ({
   try {
     const result = await pool.query(
       `SELECT
-       o.id, o.status, o.delivery_address, o.created_at,
+       o.id, o.client_id, o.status, o.delivery_address, o.created_at,
        o.client_id,
        json_agg(
          json_build_object(
@@ -140,7 +140,7 @@ export const getAllOrdersService = async (): Promise<IOrderWithItems[]> => {
   try {
     const result = await pool.query(
       `SELECT
-       o.id, o.status, o.delivery_address, o.created_at,
+       o.id, o.client_id, o.status, o.delivery_address, o.created_at,
        json_agg(
          json_build_object(
            'productId', p.id,
@@ -168,7 +168,7 @@ export const getOrdersByClientIdService = async (
   try {
     const result = await pool.query(
       `SELECT
-         o.id, o.status, o.delivery_address, o.created_at,
+         o.id, o.client_id, o.status, o.delivery_address, o.created_at,
          json_agg(
            json_build_object(
              'productId', p.id, 'name', p.name,
