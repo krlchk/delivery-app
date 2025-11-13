@@ -20,6 +20,7 @@ export interface IOrderItem {
 
 export interface IOrderWithItems {
   id: number;
+  clientId: number;
   status: "new" | "delivering" | "completed" | "cancelled";
   deliveryAddress: string;
   createdAt: Date;
@@ -30,6 +31,7 @@ export interface IOrderState {
   orders: IOrder[];
   myOrders: IOrderWithItems[];
   currentOrder: IOrderWithItems | null;
+  allUsersOrders: IOrderWithItems[];
   status: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;
 }

@@ -1,9 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { loginUser, registerUser } from "./usersAsyncThunks";
+import { fetchUsers, loginUser, registerUser } from "./usersAsyncThunks";
 import type { IUserState } from "./types";
 
 const initialState: IUserState = {
   user: null,
+  allUsers: [],
   token: null,
   status: "idle",
   error: null as string | null,
@@ -42,6 +43,17 @@ export const userSlice = createSlice({
     builder.addCase(loginUser.rejected, (state, action) => {
       state.status = "failed";
       state.error = action.error?.message || "Failed to login";
+    });
+    builder.addCase(fetchUsers.pending, (state) => {
+      state.status = "loading";
+    });
+    builder.addCase(fetchUsers.fulfilled, (state, action) => {
+      state.status = "succeeded";
+      state.allUsers = action.payload;
+    });
+    builder.addCase(fetchUsers.rejected, (state, action) => {
+      state.status = "failed";
+      state.error = action.error.message || "Failed to fetch";
     });
   },
 });

@@ -17,6 +17,10 @@ export const OrderDetailPage = () => {
   const { currentOrder, status, error } = useAppSelector(
     (state) => state.delivery.orders,
   );
+  const { user, allUsers } = useAppSelector((state) => state.delivery.users);
+  const initialUser = allUsers.find((initUser) => initUser.id === currentOrder?.clientId);
+  console.log(initialUser?.fullName);
+  
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
   useEffect(() => {
@@ -74,9 +78,9 @@ export const OrderDetailPage = () => {
     <main className="flex h-full flex-col items-center bg-neutral-200 p-10 text-xl font-semibold text-neutral-700">
       <Header />
       <section className="flex flex-col gap-2">
-        <h1 className="text-center text-2xl font-bold">
+        <h2 className="text-center text-2xl font-bold">
           Order Details № {currentOrder.id}
-        </h1>
+        </h2>
         <p className="mt-5">
           Status:{" "}
           <span
@@ -90,6 +94,10 @@ export const OrderDetailPage = () => {
           </span>
         </p>
         <p>
+          Customer name:{" "}
+          <span className="font-normal">{ initialUser?.fullName}</span>
+        </p>
+        <p>
           Address:{" "}
           <span className="font-normal">{currentOrder.deliveryAddress}</span>
         </p>
@@ -98,7 +106,8 @@ export const OrderDetailPage = () => {
           <span className="font-bold text-green-800">{totalCost}$</span>
         </p>
         <OrderDetailProducts currentOrder={currentOrder} />
-        {currentOrder.status === "cancelled" ? (
+        {currentOrder.status === "cancelled" &&
+        (user?.role === "admin" || user?.id === initialUser?.id) ? (
           <>
             <button
               onClick={() => {

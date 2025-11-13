@@ -1,5 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { deleteOrder, fetchMyOrders, fetchOrderById } from "./orderAsyncThunks";
+import {
+  deleteOrder,
+  fetchMyOrders,
+  fetchOrderById,
+  fetchOrders,
+} from "./orderAsyncThunks";
 import type { IOrderState } from "./types";
 import { createCancellation } from "../cancellation/cancellationAsyncThuncs";
 
@@ -7,6 +12,7 @@ const initialState: IOrderState = {
   orders: [],
   myOrders: [],
   currentOrder: null,
+  allUsersOrders: [],
   status: "idle",
   error: null as string | null,
 };
@@ -69,6 +75,17 @@ export const orderSlice = createSlice({
       if (state.currentOrder && state.currentOrder.id === deletedOrderId) {
         state.currentOrder = null;
       }
+    });
+    builder.addCase(fetchOrders.pending, (state) => {
+      state.status = "loading";
+    });
+    builder.addCase(fetchOrders.fulfilled, (state, action) => {
+      state.status = "succeeded";
+      state.allUsersOrders = action.payload;
+    });
+    builder.addCase(fetchOrders.rejected, (state, action) => {
+      state.status = "failed";
+      state.error = action.error.message || "Failed to fetch";
     });
   },
 });

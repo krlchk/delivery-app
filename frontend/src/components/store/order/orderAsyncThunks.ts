@@ -118,3 +118,21 @@ export const deleteOrder = createAsyncThunk<
     return thunkAPI.rejectWithValue({ message });
   }
 });
+
+export const fetchOrders = createAsyncThunk<
+  IOrderWithItems[],
+  void,
+  { state: RootState }
+>("orders/fetchOrders", async (_, thunkAPI) => {
+  const state = thunkAPI.getState();
+  const token = state.delivery.users.token;
+  const response = await axios.get<IOrdersResponse>(
+    "http://localhost:5001/api/orders",
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
+  return response.data.data;
+});

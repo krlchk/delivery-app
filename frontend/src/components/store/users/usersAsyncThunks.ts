@@ -4,8 +4,10 @@ import type {
   ILoginResponseData,
   IRegisterResponse,
   IUser,
+  IUsersResponse,
 } from "./types";
 import axios, { isAxiosError } from "axios";
+import type { RootState } from "../../../app/store";
 
 export const registerUser = createAsyncThunk<
   IUser,
@@ -42,3 +44,20 @@ export const loginUser = createAsyncThunk<
   );
   return response.data.data;
 });
+
+export const fetchUsers = createAsyncThunk<IUser[], void, { state: RootState }>(
+  "users/fetchUsers",
+  async (_, thunkAPI) => {
+    const state = thunkAPI.getState();
+    const token = state.delivery.users.token;
+    const response = await axios.get<IUsersResponse>(
+      "http://localhost:5001/api/users",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    return response.data.data;
+  },
+);

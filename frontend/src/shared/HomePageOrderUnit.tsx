@@ -1,16 +1,20 @@
 import clsx from "clsx";
-import type { IMyOrder } from "./types";
+import type { HomePageOrderUnitProps } from "./types";
 
-export const HomePageOrderUnit = ({ orderProps }: { orderProps: IMyOrder }) => {
-  const { id, status } = orderProps;
+export const HomePageOrderUnit = ({
+  orderProps,
+  allUsers,
+}: HomePageOrderUnitProps) => {
+  const { id, status, clientId } = orderProps;
+
+  const user = allUsers?.find((user) => user.id === clientId);
+
   return (
     <article className="relative flex h-32 w-full cursor-pointer flex-col justify-center gap-2 rounded border border-neutral-700 p-5 text-center text-xl font-semibold hover:bg-neutral-300">
-      {/* {status === "completed" && (
-        <button>
-          <XMark className="rounded-t-r-md absolute right-0 top-0 flex h-6 w-6 cursor-pointer items-center justify-center rounded-sm bg-neutral-300 text-lg hover:bg-neutral-400" />
-        </button>
-      )} */}
       <h2>№ {id}</h2>
+      <h2>
+        Customer: <span className="text-green-800">{user?.fullName}</span>
+      </h2>
       <h2>
         Status:{" "}
         <span
