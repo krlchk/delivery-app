@@ -9,7 +9,7 @@ import { Header } from "../shared";
 import clsx from "clsx";
 import type { IOrderWithItems } from "../components/store/order/types";
 import { ModalWindow } from "../shared";
-import { ModalCancellation } from "../modal";
+import { ModalAppointDelivery, ModalCancellation } from "../modal";
 
 export const OrderDetailPage = () => {
   const { id } = useParams();
@@ -17,11 +17,16 @@ export const OrderDetailPage = () => {
   const { currentOrder, status, error } = useAppSelector(
     (state) => state.delivery.orders,
   );
-  const { user, allUsers } = useAppSelector((state) => state.delivery.users);
-  const initialUser = allUsers.find((initUser) => initUser.id === currentOrder?.clientId);
-  console.log(initialUser?.fullName);
-  
-  const [isOpen, setIsOpen] = useState(false);
+  const { user, allUsers, coosenCourier } = useAppSelector(
+    (state) => state.delivery.users,
+  );
+  const initialUser = allUsers.find(
+    (initUser) => initUser.id === currentOrder?.clientId,
+  );
+
+  const [isCancellationOpen, setIsCancellationOpen] = useState(false);
+  const [isDeliveryOpen, setIsDeliveryOpen] = useState(false);
+
   const navigate = useNavigate();
   useEffect(() => {
     if (id) {
@@ -36,8 +41,11 @@ export const OrderDetailPage = () => {
     );
   }, [currentOrder?.items]);
 
-  const handleModalClick = () => {
-    setIsOpen(!isOpen);
+  const handleModalCancellationClick = () => {
+    setIsCancellationOpen(!isCancellationOpen);
+  };
+  const handleModalDeliveryClick = () => {
+    setIsDeliveryOpen(!isDeliveryOpen);
   };
 
   const handleDelete = async (orderId: number) => {
@@ -94,8 +102,16 @@ export const OrderDetailPage = () => {
           </span>
         </p>
         <p>
+          Courier:{" "}
+          {currentOrder.courierId === null ? (
+            <span className="font-normal">none</span>
+          ) : (
+            <span className="font-normal">{coosenCourier?.fullName}</span>
+          )}
+        </p>
+        <p>
           Customer name:{" "}
-          <span className="font-normal">{ initialUser?.fullName}</span>
+          <span className="font-normal">{initialUser?.fullName}</span>
         </p>
         <p>
           Address:{" "}
@@ -125,12 +141,22 @@ export const OrderDetailPage = () => {
             </button>
           </>
         ) : (
-          <button
-            onClick={handleModalClick}
-            className="mt-5 w-full rounded-lg bg-orange-500 px-4 py-2 font-semibold text-white transition-colors hover:bg-orange-800"
-          >
-            Cancel order
-          </button>
+          <>
+            <button
+              onClick={handleModalCancellationClick}
+              className="mt-5 w-full rounded-lg bg-orange-500 px-4 py-2 font-semibold text-white transition-colors hover:bg-orange-800"
+            >
+              Cancel order
+            </button>
+            {user?.role === "admin" && currentOrder.courierId === null ? (
+              <button
+                onClick={handleModalDeliveryClick}
+                className="mt-1 w-full rounded-lg bg-blue-500 px-4 py-2 font-semibold text-white transition-colors hover:bg-blue-800"
+              >
+                Appoint a delivery person
+              </button>
+            ) : null}
+          </>
         )}
 
         {currentOrder.status === "completed" && (
@@ -143,11 +169,19 @@ export const OrderDetailPage = () => {
         )}
       </section>
       <ModalWindow
-        isOpen={isOpen}
-        handleClick={handleModalClick}
+        isOpen={isCancellationOpen}
+        handleClick={handleModalCancellationClick}
         child={
-          <ModalCancellation isOpen={isOpen} handleClick={handleModalClick} />
+          <ModalCancellation
+            isOpen={isCancellationOpen}
+            handleClick={handleModalCancellationClick}
+          />
         }
+      />
+      <ModalWindow
+        isOpen={isDeliveryOpen}
+        handleClick={handleModalDeliveryClick}
+        child={<ModalAppointDelivery handleClick={handleModalDeliveryClick} />}
       />
     </main>
   );

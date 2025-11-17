@@ -113,7 +113,6 @@ export const productSlice = createSlice({
       state.status = "loading";
       state.error = null;
     });
-
     builder.addCase(updateProduct.fulfilled, (state, action) => {
       state.status = "succeeded";
 

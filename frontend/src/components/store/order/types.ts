@@ -21,6 +21,7 @@ export interface IOrderItem {
 export interface IOrderWithItems {
   id: number;
   clientId: number;
+  courierId?: number | null;
   status: "new" | "delivering" | "completed" | "cancelled";
   deliveryAddress: string;
   createdAt: Date;
@@ -57,4 +58,10 @@ export interface IOrderByIdResponse {
 export interface IOrderItemPayload {
   product: IProduct;
   amount: number;
+}
+
+export  interface IUpdateOrderCourierResponse {
+  data: IOrderWithItems;
+  status: number;
+  message: string;
 }

@@ -12,6 +12,7 @@ export interface IUser {
 export interface IUserState {
   user: IUser | null;
   allUsers: IUser[];
+  coosenCourier: IUser | null;
   token: string | null;
   status: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;

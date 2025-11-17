@@ -21,7 +21,9 @@ export const Header = () => {
     <header className="mb-8 flex w-full items-center justify-between border-b border-black p-3 text-xl font-semibold">
       <Link className="flex flex-col items-center justify-center" to="/">
         <LogoIcon className="h-12 w-12" />
-        <h3 className="text-center text-sm font-bold text-red-800">Admin</h3>
+        {user?.role === "admin" && (
+          <h3 className="text-center text-sm font-bold text-red-800">Admin</h3>
+        )}
       </Link>
       <nav>
         <ul className="flex items-center justify-center gap-5">

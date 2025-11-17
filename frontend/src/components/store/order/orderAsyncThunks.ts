@@ -6,6 +6,7 @@ import type {
   IOrderResponse,
   IOrdersResponse,
   IOrderWithItems,
+  IUpdateOrderCourierResponse,
 } from "./types";
 import type { RootState } from "../../../app/store";
 import axios, { isAxiosError } from "axios";
@@ -135,4 +136,40 @@ export const fetchOrders = createAsyncThunk<
     },
   );
   return response.data.data;
+});
+
+export const updateOrderCourier = createAsyncThunk<
+  IOrderWithItems,
+  {
+    id: number;
+    courierId: number;
+    status: "new" | "delivering" | "completed" | "cancelled";
+  },
+  { state: RootState }
+>("orders/updateOrderCourier", async ({ id, courierId, status }, thunkAPI) => {
+  try {
+    const state = thunkAPI.getState();
+    const token = state.delivery.users.token;
+    const response = await axios.patch<IUpdateOrderCourierResponse>(
+      `http://localhost:5001/api/update-order/${id}`,
+      {
+        courierId,
+        status,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    return response.data.data;
+  } catch (error: unknown) {
+    let message = "Failed to update order courier";
+
+    if (isAxiosError(error) && error.response?.data?.message) {
+      message = error.response.data.message;
+    }
+
+    return thunkAPI.rejectWithValue({ message });
+  }
 });

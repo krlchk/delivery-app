@@ -5,6 +5,7 @@ import type { IUserState } from "./types";
 const initialState: IUserState = {
   user: null,
   allUsers: [],
+  coosenCourier: null,
   token: null,
   status: "idle",
   error: null as string | null,
@@ -18,6 +19,9 @@ export const userSlice = createSlice({
     resetStatus: (state) => {
       state.status = "idle";
       state.error = null;
+    },
+    chooseCourier: (state, action) => {
+      state.coosenCourier = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -58,5 +62,5 @@ export const userSlice = createSlice({
   },
 });
 
-export const { resetStatus, logoutUser } = userSlice.actions;
+export const { resetStatus, logoutUser, chooseCourier } = userSlice.actions;
 export default userSlice.reducer;
