@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { Header, InputField, OrderUnit, Toast } from "../shared";
+import { Footer, Header, InputField, OrderUnit, Toast } from "../shared";
 import { removeAllProductsFromCart } from "../components/store/product/productSlice";
 import { useMemo, useState } from "react";
 import { useToast } from "../hooks/useToast";
@@ -9,17 +9,7 @@ import { resetOrderStatus } from "../components/store/order/orderSlice";
 import type { OrderSummaryProps } from "../components/store/product/types";
 
 export const OrderPage = () => {
-  const { orderedProducts } = useAppSelector(
-    (state) => state.delivery.products,
-  );
   const { user } = useAppSelector((state) => state.delivery.users);
-  const totalCost = useMemo(() => {
-    return orderedProducts.reduce(
-      (acc, { product, amount }) => acc + product.price * amount,
-      0,
-    );
-  }, [orderedProducts]);
-
   const { message, showToast } = useToast();
 
   return (
@@ -27,28 +17,50 @@ export const OrderPage = () => {
       {user === null ? (
         <Navigate to="/login-page" />
       ) : (
-        <main className="flex h-full flex-col items-center bg-neutral-200 p-10 text-neutral-700">
+        <div className="flex min-h-screen flex-col items-center bg-neutral-200 text-neutral-700">
           {message && <Toast message={message} />}
           <Header />
-          <h1 className="text-2xl font-bold">Your Order is</h1>
-          {orderedProducts.length !== 0 ? (
-            <OrderSummary
-              orderedProducts={orderedProducts}
-              totalCost={totalCost}
-              showToast={showToast}
-            />
-          ) : (
-            <EmptyCartMessage />
-          )}
-        </main>
+          <OrderPageMainSection showToast={showToast} />
+          <Footer />
+        </div>
       )}
     </>
   );
 };
 
+const OrderPageMainSection = ({
+  showToast,
+}: {
+  showToast: (msg: string) => void;
+}) => {
+  const { orderedProducts } = useAppSelector(
+    (state) => state.delivery.products,
+  );
+  const totalCost = useMemo(() => {
+    return orderedProducts.reduce(
+      (acc, { product, amount }) => acc + product.price * amount,
+      0,
+    );
+  }, [orderedProducts]);
+  return (
+    <main className="flex flex-grow flex-col items-center px-6 py-14">
+      <h1 className="text-2xl font-bold">Your Order is</h1>
+      {orderedProducts.length !== 0 ? (
+        <OrderSummary
+          orderedProducts={orderedProducts}
+          totalCost={totalCost}
+          showToast={showToast}
+        />
+      ) : (
+        <EmptyCartMessage />
+      )}
+    </main>
+  );
+};
+
 const EmptyCartMessage = () => {
   return (
-    <div className="h-screen text-center">
+    <div className="text-center">
       <p className="mt-10 text-2xl font-bold">Your cart is empty...</p>
     </div>
   );

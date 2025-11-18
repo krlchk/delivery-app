@@ -7,3 +7,4 @@ export { RegistrationForm } from "./RefistrationForm";
 export { Header } from "./Header";
 export { Toast } from "./Toast";
 export { ModalWindow } from "./ModalWindow";
+export { Footer } from "./Footer";

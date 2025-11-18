@@ -18,11 +18,21 @@ export const Header = () => {
   };
 
   return (
-    <header className="mb-8 flex w-full items-center justify-between border-b border-black p-3 text-xl font-semibold">
+    <header className="flex w-full items-center justify-between border-b border-black p-5 text-xl font-semibold">
       <Link className="flex flex-col items-center justify-center" to="/">
         <LogoIcon className="h-12 w-12" />
         {user?.role === "admin" && (
           <h3 className="text-center text-sm font-bold text-red-800">Admin</h3>
+        )}
+        {user?.role === "courier" && (
+          <h3 className="text-center text-sm font-bold text-blue-500">
+            Courier
+          </h3>
+        )}
+        {user?.role === "customer" && (
+          <h3 className="text-center text-sm font-bold text-green-800">
+            customer
+          </h3>
         )}
       </Link>
       <nav>
@@ -49,6 +59,16 @@ export const Header = () => {
               >
                 Create product
               </button>
+            </li>
+          )}
+          {user?.role === "courier" && (
+            <li>
+              <Link
+                to="/courier-orders-page"
+                className="text-blue-500 hover:underline"
+              >
+                Orders assigned to you
+              </Link>
             </li>
           )}
         </ul>

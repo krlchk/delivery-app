@@ -173,3 +173,37 @@ export const updateOrderCourier = createAsyncThunk<
     return thunkAPI.rejectWithValue({ message });
   }
 });
+
+export const updateOrderStatus = createAsyncThunk<
+  IOrderWithItems,
+  {
+    id: number;
+    status: "new" | "delivering" | "completed" | "cancelled";
+  },
+  { state: RootState }
+>("orders/updateOrderStatus", async ({ id,  status }, thunkAPI) => {
+  try {
+    const state = thunkAPI.getState();
+    const token = state.delivery.users.token;
+    const response = await axios.patch<IUpdateOrderCourierResponse>(
+      `http://localhost:5001/api/update-order/${id}`,
+      {
+        status,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    return response.data.data;
+  } catch (error: unknown) {
+    let message = "Failed to update order status";
+
+    if (isAxiosError(error) && error.response?.data?.message) {
+      message = error.response.data.message;
+    }
+
+    return thunkAPI.rejectWithValue({ message });
+  }
+});

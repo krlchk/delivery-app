@@ -5,6 +5,7 @@ import {
   fetchOrderById,
   fetchOrders,
   updateOrderCourier,
+  updateOrderStatus,
 } from "./orderAsyncThunks";
 import type { IOrderState } from "./types";
 import { createCancellation } from "../cancellation/cancellationAsyncThuncs";
@@ -95,49 +96,39 @@ export const orderSlice = createSlice({
     builder.addCase(updateOrderCourier.fulfilled, (state, action) => {
       state.status = "succeeded";
 
-      // 'action.payload' - це 'IOrderWithItems' з вашого thunk.
-      // Він містить 'items', але, ймовірно, не 'courier'.
       const updatedOrderData = action.payload;
 
-      // 1. Оновлюємо 'currentOrder' (це виправить зникнення кур'єра)
       if (state.currentOrder && state.currentOrder.id === updatedOrderData.id) {
         state.currentOrder = {
-          ...state.currentOrder, // <-- Зберігаємо старі дані (включно з 'courier')
-          ...updatedOrderData, // <-- Накладаємо нові дані ('status', 'courierId', 'items')
+          ...state.currentOrder,
+          ...updatedOrderData,
         };
       }
 
-      // 2. Оновлюємо 'myOrders' (який має тип IOrderWithItems[])
       const myOrdersIndex = state.myOrders.findIndex(
         (order) => order.id === updatedOrderData.id,
       );
       if (myOrdersIndex !== -1) {
         state.myOrders[myOrdersIndex] = {
-          ...state.myOrders[myOrdersIndex], // <-- Зберігаємо старі дані
+          ...state.myOrders[myOrdersIndex],
           ...updatedOrderData,
         };
       }
 
-      // 3. Оновлюємо 'allUsersOrders' (який має тип IOrderWithItems[])
       const allOrdersIndex = state.allUsersOrders.findIndex(
         (order) => order.id === updatedOrderData.id,
       );
       if (allOrdersIndex !== -1) {
         state.allUsersOrders[allOrdersIndex] = {
-          ...state.allUsersOrders[allOrdersIndex], // <-- Зберігаємо старі дані
+          ...state.allUsersOrders[allOrdersIndex],
           ...updatedOrderData,
         };
       }
 
-      // 4. Оновлюємо 'orders' (який має тип IOrder[])
-      //    Оскільки 'action.payload' (IOrderWithItems) не є типом 'IOrder',
-      //    ми не можемо просто його присвоїти. Ми оновимо лише ті поля,
-      //    які є в 'IOrder'.
       const ordersIndex = state.orders.findIndex(
         (order) => order.id === updatedOrderData.id,
       );
       if (ordersIndex !== -1) {
-        // Оновлюємо лише ті поля, які є в 'IOrder'
         state.orders[ordersIndex].status = updatedOrderData.status;
         state.orders[ordersIndex].courierId = updatedOrderData.courierId;
       }
@@ -145,6 +136,53 @@ export const orderSlice = createSlice({
     builder.addCase(updateOrderCourier.rejected, (state, action) => {
       state.status = "failed";
       state.error = action.error?.message || "Failed to update";
+    });
+    builder.addCase(updateOrderStatus.pending, (state) => {
+      state.status = "loading";
+      state.error = null;
+    });
+    builder.addCase(updateOrderStatus.fulfilled, (state, action) => {
+      state.status = "succeeded";
+
+      const updatedOrderData = action.payload;
+
+      if (state.currentOrder && state.currentOrder.id === updatedOrderData.id) {
+        state.currentOrder = {
+          ...state.currentOrder,
+          ...updatedOrderData,
+        };
+      }
+
+      const myOrdersIndex = state.myOrders.findIndex(
+        (order) => order.id === updatedOrderData.id,
+      );
+      if (myOrdersIndex !== -1) {
+        state.myOrders[myOrdersIndex] = {
+          ...state.myOrders[myOrdersIndex],
+          ...updatedOrderData,
+        };
+      }
+
+      const allOrdersIndex = state.allUsersOrders.findIndex(
+        (order) => order.id === updatedOrderData.id,
+      );
+      if (allOrdersIndex !== -1) {
+        state.allUsersOrders[allOrdersIndex] = {
+          ...state.allUsersOrders[allOrdersIndex],
+          ...updatedOrderData,
+        };
+      }
+
+      const ordersIndex = state.orders.findIndex(
+        (order) => order.id === updatedOrderData.id,
+      );
+      if (ordersIndex !== -1) {
+        state.orders[ordersIndex].status = updatedOrderData.status;
+      }
+    });
+    builder.addCase(updateOrderStatus.rejected, (state, action) => {
+      state.status = "failed";
+      state.error = action.error?.message || "Failed to update status";
     });
   },
 });

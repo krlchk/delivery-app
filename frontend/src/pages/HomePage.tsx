@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { Header } from "../shared";
+import { Footer, Header } from "../shared";
 import {
   fetchMyOrders,
   fetchOrders,
@@ -10,16 +10,12 @@ import { HomePageOrderUnit } from "../shared/HomePageOrderUnit";
 import { fetchUsers } from "../components/store/users/usersAsyncThunks";
 
 export const HomePage = () => {
-  const {
-    myOrders,
-    allUsersOrders,
-    status: ordersStatus,
-  } = useAppSelector((state) => state.delivery.orders);
-  const {
-    user,
-    allUsers,
-    status: usersStatus,
-  } = useAppSelector((state) => state.delivery.users);
+  const { status: ordersStatus } = useAppSelector(
+    (state) => state.delivery.orders,
+  );
+  const { status: usersStatus } = useAppSelector(
+    (state) => state.delivery.users,
+  );
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -35,16 +31,30 @@ export const HomePage = () => {
     ordersStatus === "idle"
   ) {
     return (
-      <main className="flex h-full flex-col items-center bg-neutral-200 p-10 text-neutral-700">
+      <div className="flex flex-grow flex-col items-center bg-neutral-200 p-10 text-neutral-700">
         <Header />
         <h2 className="mt-5 text-2xl font-bold">Loading data...</h2>
-      </main>
+        <Footer />
+      </div>
     );
   }
-  
+
   return (
-    <main className="flex h-full flex-col items-center bg-neutral-200 p-10 text-neutral-700">
+    <div className="flex min-h-screen flex-col items-center bg-neutral-200 text-neutral-700">
       <Header />
+      <HomePageMainSection />
+      <Footer />
+    </div>
+  );
+};
+
+const HomePageMainSection = () => {
+  const { myOrders, allUsersOrders } = useAppSelector(
+    (state) => state.delivery.orders,
+  );
+  const { user, allUsers } = useAppSelector((state) => state.delivery.users);
+  return (
+    <main className="flex flex-grow flex-col items-center px-6 py-14">
       <h2 className="text-2xl font-bold">The status of your orders:</h2>
       <ul className="mt-5 grid grid-cols-3 gap-3">
         {myOrders.map((order) => (
