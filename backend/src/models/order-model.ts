@@ -140,7 +140,7 @@ export const getAllOrdersService = async (): Promise<IOrderWithItems[]> => {
   try {
     const result = await pool.query(
       `SELECT
-       o.id, o.client_id, o.status, o.delivery_address, o.created_at,
+       o.id, o.client_id, o.status, o.delivery_address, o.created_at, o.courier_id,
        json_agg(
          json_build_object(
            'productId', p.id,

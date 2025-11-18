@@ -42,7 +42,11 @@ export const getOrderById = async (req: Request, res: Response) => {
     if (!requester) {
       return responseHandler(res, 401, "User not authenticated");
     }
-    if (requester.role !== "admin" && requester.id !== order.clientId) {
+    if (
+      requester.role !== "admin" &&
+      requester.role !== "courier" &&
+      requester.id !== order.clientId
+    ) {
       return responseHandler(
         res,
         403,
@@ -79,7 +83,10 @@ export const updateOrder = async (req: Request, res: Response) => {
     }
 
     const requester = req.user;
-    if (!requester || requester.role !== "admin") {
+    if (
+      !requester ||
+      (requester.role !== "admin" && requester.role !== "courier")
+    ) {
       return responseHandler(
         res,
         403,
@@ -112,11 +119,11 @@ export const getAllOrders = async (req: Request, res: Response) => {
     if (!requester) {
       return responseHandler(res, 401, "User not authenticated");
     }
-    if (requester.role !== "admin") {
+    if (requester.role !== "admin" && requester.role !== "courier") {
       return responseHandler(
         res,
         403,
-        "Forbidden: Access denied. Admins only."
+        "Forbidden: Access denied. Admins and couriers only."
       );
     }
     return responseHandler(res, 200, "Orders fetched succesfully", orders);
@@ -133,8 +140,13 @@ export const getMyOrders = async (req: Request, res: Response) => {
     }
 
     const orders = await getOrdersByClientIdService(clientId);
-    
-    return responseHandler(res, 200, "User's orders fetched successfully", orders);
+
+    return responseHandler(
+      res,
+      200,
+      "User's orders fetched successfully",
+      orders
+    );
   } catch (error) {
     return errorHandler(error, res);
   }
