@@ -6,6 +6,7 @@ import userRoutes from "./routes/user-route";
 import productRoutes from "./routes/product-route";
 import orderRoutes from "./routes/order-routes";
 import cancellationRoutes from "./routes/cancellation-routes";
+import analyticsRoutes from "./routes/analytics-routes";
 
 dotenv.config();
 
@@ -19,6 +20,7 @@ app.use("/api", userRoutes);
 app.use("/api", productRoutes);
 app.use("/api", orderRoutes);
 app.use("/api", cancellationRoutes);
+app.use("/api", analyticsRoutes);
 
 app.get("/", async (_req: Request, res: Response) => {
   try {
