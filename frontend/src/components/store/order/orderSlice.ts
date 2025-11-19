@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
   deleteOrder,
+  fetchAnalytics,
   fetchMyOrders,
   fetchOrderById,
   fetchOrders,
@@ -15,6 +16,7 @@ const initialState: IOrderState = {
   myOrders: [],
   currentOrder: null,
   allUsersOrders: [],
+  analytics: null,
   status: "idle",
   error: null as string | null,
 };
@@ -183,6 +185,17 @@ export const orderSlice = createSlice({
     builder.addCase(updateOrderStatus.rejected, (state, action) => {
       state.status = "failed";
       state.error = action.error?.message || "Failed to update status";
+    });
+    builder.addCase(fetchAnalytics.pending, (state) => {
+      state.status = "loading";
+    });
+    builder.addCase(fetchAnalytics.fulfilled, (state, action) => {
+      state.status = "succeeded";
+      state.analytics = action.payload;
+    });
+    builder.addCase(fetchAnalytics.rejected, (state, action) => {
+      state.status = "failed";
+      state.error = action.payload as string || "Failed to load analytics";
     });
   },
 });

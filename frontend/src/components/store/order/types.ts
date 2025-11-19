@@ -33,6 +33,7 @@ export interface IOrderState {
   myOrders: IOrderWithItems[];
   currentOrder: IOrderWithItems | null;
   allUsersOrders: IOrderWithItems[];
+  analytics: IAnalyticsData | null;
   status: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;
 }
@@ -62,6 +63,17 @@ export interface IOrderItemPayload {
 
 export  interface IUpdateOrderCourierResponse {
   data: IOrderWithItems;
+  status: number;
+  message: string;
+}
+
+export interface IAnalyticsData {
+  ordersByStatus: { status: string; count: string }[];
+  popularProducts: { name: string; totalSold: string }[];
+}
+
+export interface IAnalyticsResponse {
+  data: IAnalyticsData;
   status: number;
   message: string;
 }

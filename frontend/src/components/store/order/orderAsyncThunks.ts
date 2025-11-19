@@ -1,5 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import type {
+  IAnalyticsData,
+  IAnalyticsResponse,
   IOrder,
   IOrderByIdResponse,
   IOrderItemPayload,
@@ -207,3 +209,32 @@ export const updateOrderStatus = createAsyncThunk<
     return thunkAPI.rejectWithValue({ message });
   }
 });
+
+export const fetchAnalytics = createAsyncThunk<
+  IAnalyticsData,
+  void,
+  { state: RootState }
+>(
+  "orders/fetchAnalytics",
+  async (_, thunkAPI) => {
+    try {
+      const state = thunkAPI.getState();
+      const token = state.delivery.users.token;
+      const response = await axios.get<IAnalyticsResponse>(
+        "http://localhost:5001/api/analytics", 
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      return response.data.data;
+    } catch (error: unknown) {
+      let message = "Failed to fetch analytics";
+      if (isAxiosError(error) && error.response?.data?.message) {
+        message = error.response.data.message;
+      }
+      return thunkAPI.rejectWithValue({ message });
+    }
+  }
+);

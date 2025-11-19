@@ -1,5 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import {
+  AnalyticsPage,
   CatalogPage,
   CourierOrdersPage,
   HomePage,
@@ -53,6 +54,14 @@ const App = () => {
             <ProtectedUserRoute>
               <ProductDetailPage />
             </ProtectedUserRoute>
+          </ProtectedAdminRoute>
+        }
+      />
+      <Route
+        path="/analytics"
+        element={
+          <ProtectedAdminRoute>
+            <AnalyticsPage />
           </ProtectedAdminRoute>
         }
       />

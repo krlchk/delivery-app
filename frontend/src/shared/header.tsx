@@ -61,6 +61,15 @@ export const Header = () => {
               </button>
             </li>
           )}
+          {user?.role === "admin" && (
+            <li>
+              <Link to="/analytics"
+                className="text-red-800 hover:underline"
+              >
+                Analytics
+              </Link>
+            </li>
+          )}
           {user?.role === "courier" && (
             <li>
               <Link

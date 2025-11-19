@@ -7,3 +7,4 @@ export { UserPage } from "./UserPage";
 export { OrderDetailPage } from "./OrderDetailPage";
 export { ProductDetailPage } from "./ProductDetailPage";
 export { CourierOrdersPage } from "./CourierOrdersPage";
+export { AnalyticsPage } from "./AnalyticsPage";
